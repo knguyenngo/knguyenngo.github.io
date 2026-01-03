@@ -8,10 +8,34 @@ const LINKS = {
 };
 
 const projects = [
-  { name: "IoT Fridge Monitoring", repo: "https://github.com/knguyenngo/iot-fridge" },
-  { name: "Reddit Trends Dashboard", repo: "https://github.com/knguyenngo/reddit-nlp-dashboard" },
-  { name: "Multilingual Pokémon Reference App", repo: "https://github.com/knguyenngo/pokemon-multilingual" },
-  { name: "Esports Stats Platform", repo: "https://github.com/knguyenngo/esports-stats" },
+  { 
+    name: "IoT Fridge Monitoring", 
+    repo: "https://github.com/knguyenngo/iot-fridge",
+    description: "Real-time temperature monitoring system with email alerts and data visualization for food safety compliance.",
+    tech: ["Python", "FastAPI", "React", "MongoDB", "IoT"],
+    image: "/project-iot.jpg"
+  },
+  { 
+    name: "Reddit Trends Dashboard", 
+    repo: "https://github.com/knguyenngo/reddit-nlp-dashboard",
+    description: "NLP-powered analytics dashboard tracking trending topics and sentiment analysis across subreddits.",
+    tech: ["Python", "NLP", "Dash", "PostgreSQL"],
+    image: "/project-reddit.jpg"
+  },
+  { 
+    name: "Multilingual Pokémon Reference", 
+    repo: "https://github.com/knguyenngo/pokemon-multilingual",
+    description: "Interactive reference app with translations in multiple languages, powered by PokéAPI.",
+    tech: ["React", "TypeScript", "Tailwind", "REST API"],
+    image: "/project-pokemon.jpg"
+  },
+  { 
+    name: "Esports Stats Platform", 
+    repo: "https://github.com/knguyenngo/esports-stats",
+    description: "Comprehensive statistics and analytics platform for competitive gaming with live match tracking.",
+    tech: ["Node.js", "Express", "React", "Chart.js"],
+    image: "/project-esports.jpg"
+  },
 ];
 
 const greetings = [
@@ -23,10 +47,19 @@ const greetings = [
 export default function App() {
   const [avatarOk, setAvatarOk] = useState(true);
   const [greetIndex, setGreetIndex] = useState(0);
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    return saved || "light";
+  });
 
   useEffect(() => {
     document.title = "Khuong Nguyen";
   }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)");
@@ -41,6 +74,10 @@ export default function App() {
 
   const current = greetings[greetIndex];
 
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
+
   return (
     <>
       <div className="bg" aria-hidden="true" />
@@ -51,6 +88,14 @@ export default function App() {
             <nav className="nav">
               <a href="#projects">Projects</a>
               <a href="#contact" className="pill">Contact</a>
+              <button
+                className="themeToggle"
+                onClick={toggleTheme}
+                aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+                title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+              >
+                {theme === "light" ? "🌙" : "☀️"}
+              </button>
             </nav>
           </div>
         </header>
@@ -83,13 +128,12 @@ export default function App() {
                       {current.text}
                     </span>
                   </span>
-                  <span className="dash"> — </span>
-                  I’m <span className="accent">Khuong</span>.
+                  <span className="dash"> </span>
+                  I'm <span className="accent">Khương</span>.
                 </h1>
 
                 <p className="lead">
-                  I like building calm, practical software: web apps, dashboards,
-                  and tools that help people understand what’s going on (without the chaos).
+                  I'm a Full Stack Developer who turns complex data into clear, actionable stories. I focus on bridging the gap between technical systems and the people who use them to find genuine insight.
                 </p>
 
                 <div className="ctaRow">
@@ -129,11 +173,11 @@ export default function App() {
                 </div>
 
                 <div className="miniCard">
-                  <div className="miniTitle">What I’m into</div>
+                  <div className="miniTitle">What I'm into</div>
                   <ul className="miniList">
-                    <li>Simple UI that feels good to use</li>
-                    <li>Solid backend + clean data</li>
-                    <li>Shipping small wins consistently</li>
+                    <li>Human-Centered Design: Building tools that feel like a helping hand rather than a puzzle.</li>
+                    <li>Meaningful Craft: Doing the quiet, behind-the-scenes work to keep things running smoothly.</li>
+                    <li>Finding the Signal: Using a bit of ML and automation to cut through the noise.</li>
                   </ul>
                 </div>
               </div>
@@ -144,20 +188,43 @@ export default function App() {
         <section className="section" id="projects">
           <div className="sectionHead">
             <h2>Projects</h2>
-            <p>Just the highlights — click through for repos.</p>
+            <p>Hover to see details, click to view code.</p>
           </div>
 
-          <div className="projectList">
+          <div className="projectGrid">
             {projects.map((p) => (
               <a
                 key={p.name}
-                className="projectRow"
+                className="projectCard"
                 href={p.repo}
                 target="_blank"
                 rel="noreferrer"
               >
-                <span className="projectName">{p.name}</span>
-                <span className="projectArrow">↗</span>
+                <div className="projectImage">
+                  <img 
+                    src={p.image} 
+                    alt={`${p.name} screenshot`}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextElementSibling.style.display = 'grid';
+                    }}
+                  />
+                  <div className="projectImageFallback">
+                    <span className="projectIcon">🖥️</span>
+                  </div>
+                </div>
+                <div className="projectContent">
+                  <h3 className="projectTitle">{p.name}</h3>
+                  <p className="projectDesc">{p.description}</p>
+                  <div className="techStack">
+                    {p.tech.map((t) => (
+                      <span key={t} className="techBadge">{t}</span>
+                    ))}
+                  </div>
+                </div>
+                <div className="projectHover">
+                  <span className="projectCTA">View on GitHub →</span>
+                </div>
               </a>
             ))}
           </div>
@@ -166,10 +233,9 @@ export default function App() {
         <footer className="footer">
           <span>© {new Date().getFullYear()} Khuong Nguyen</span>
           <span className="footerSep">•</span>
-          <span className="muted">Pastel • Minimal • Responsive</span>
+          <span className="muted">Open for Work</span>
         </footer>
       </main>
     </>
   );
 }
-
