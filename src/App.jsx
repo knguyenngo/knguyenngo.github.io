@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./index.css";
+import backImg from "./assets/neo.png";
 
 const LINKS = {
   github: "https://github.com/knguyenngo",
@@ -44,9 +45,7 @@ const greetings = [
 export default function App() {
   const [greetIndex, setGreetIndex] = useState(0);
   const [theme, setTheme] = useState("dark");
-  const [backgroundImage, setBackgroundImage] = useState("");
-
-  useEffect(() => {
+  const [backgroundImage, setBackgroundImage] = useState(backImg);  useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 

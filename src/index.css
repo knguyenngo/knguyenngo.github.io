@@ -188,22 +188,6 @@ body {
   overflow: hidden;
 }
 
-.heroCard::before {
-  content: '';
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 600px;
-  height: 400px;
-  background-image: url('./assets/neo.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: bottom right;
-  opacity: 0.08;
-  pointer-events: none;
-  z-index: 0;
-}
-
 .heroGrid { 
   display: grid; 
   grid-template-columns: 184px 1fr 260px; 
@@ -545,11 +529,5 @@ body {
   
   .heroCard {
     padding: 24px;
-  }
-  
-  .heroCard::before {
-    width: 400px;
-    height: 300px;
-    opacity: 0.05;
   }
 }
