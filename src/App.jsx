@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./index.css";
-import backImg from "./assets/neo.png";
+import backImg from "./assets/bg.gif";
 
 const LINKS = {
   github: "https://github.com/knguyenngo",
@@ -37,23 +37,35 @@ const projects = [
 ];
 
 const greetings = [
-  { key: "en", text: "Hello!", dir: "ltr" },
+  { key: "en", text: "Hello", dir: "ltr" },
   { key: "ar", text: "مرحبا", dir: "rtl" },
   { key: "vi", text: "Xin Chào", dir: "ltr" },
 ];
 
 export default function App() {
   const [greetIndex, setGreetIndex] = useState(0);
-  const [theme, setTheme] = useState("dark");
-  const [backgroundImage, setBackgroundImage] = useState(backImg);  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
+  const [backgroundImage, setBackgroundImage] = useState(backImg);
+  const [githubActivity, setGithubActivity] = useState([]);
 
   useEffect(() => {
     const id = setInterval(() => {
       setGreetIndex((i) => (i + 1) % greetings.length);
     }, 3000);
     return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    fetch('https://api.github.com/users/knguyenngo/events/public')
+      .then(res => res.json())
+      .then(data => {
+        const recent = data.slice(0, 5).map(event => ({
+          type: event.type.replace('Event', ''),
+          repo: event.repo.name.split('/')[1],
+          time: new Date(event.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+        }));
+        setGithubActivity(recent);
+      })
+      .catch(err => console.error('GitHub API error:', err));
   }, []);
 
   const current = greetings[greetIndex];
@@ -72,9 +84,6 @@ export default function App() {
           <div className="logo">KN</div>
           <nav className="nav">
             <a href="#projects">Showcase</a>
-            <button className="themeToggle" onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}>
-              {theme === "light" ? "🌙" : "☀️"}
-            </button>
           </nav>
         </header>
 
@@ -83,24 +92,22 @@ export default function App() {
             <div className="heroLeft">
               <div className="profileFrame">
                 <img className="avatar" src="/headshot.jpg" alt="Khuong Nguyen" />
-                <div className={`heroGreeting lang-${current.key}`} dir={current.dir}>
-                  {current.text}
-                </div>
               </div>
-              <div className="statusBadge">Online</div>
+              <div className="statusBadge">???</div>
             </div>
 
             <div className="heroRight">
               <div className="headerTop">
                 <h1 className="title">Khuong Nguyen</h1>
-                <div className="levelBadge">
-                  <span>Level</span>
-                  <span className="levelCircle">99</span>
-                </div>
               </div>
-              
+
+             <div className="flagsRow">
+               <span className="flag">🇻🇳</span>
+               <span className="flag">🇵🇸</span>
+             </div>
+
               <div className="subHeader">
-                Software Developer <br/>
+                Full Stack Software Developer <br/>
               </div>
 
               <div className="bioBox">
@@ -110,6 +117,12 @@ export default function App() {
             </div>
 
             <div className="heroSidebar">
+              <div className="profileGreetingWrapper">
+                <div className={`heroGreeting lang-${current.key}`} dir={current.dir}>
+                  {current.text}
+                </div>
+              </div>
+
               <div className="sidebarBox contactOnly">
                 <div className="sidebarTitle">Contact</div>
                 <div className="iconLinksRow centered">
@@ -126,27 +139,51 @@ export default function App() {
               </div>
             </div>
           </div>
+
         </section>
 
         <section className="section" id="projects">
-          <div className="sectionHead">
-            <h2>Featured Showcase</h2>
-          </div>
-          <div className="projectGrid">
-            {projects.map((p, idx) => (
-              <a key={`${p.name}-${idx}`} className="projectCard" href={p.repo} target="_blank" rel="noreferrer">
-                <div className="projectImage">
-                  <div className="imgPlaceholder">Showcase Image</div>
+          <div className="projectsWrapper">
+            <div className="projectsContainer">
+              <div className="sectionHead">
+                <h2>Featured Showcase</h2>
+              </div>
+              <div className="projectGrid">
+                {projects.map((p, idx) => (
+                  <a key={`${p.name}-${idx}`} className="projectCard" href={p.repo} target="_blank" rel="noreferrer">
+                    <div className="projectImage">
+                      <div className="imgPlaceholder">Showcase Image</div>
+                    </div>
+                    <div className="projectContent">
+                      <h3 className="projectTitle">{p.name}</h3>
+                      <p className="projectDesc">{p.description}</p>
+                      <div className="techStack">
+                        {p.tech.map((t) => <span key={t} className="techBadge">{t}</span>)}
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="projectsSidebar">
+              <div className="sidebarBox activityBox">
+                <div className="sidebarTitle">Recent Activity</div>
+                <div className="activityList">
+                  {githubActivity.length > 0 ? (
+                    githubActivity.map((activity, idx) => (
+                      <div key={idx} className="activityItem">
+                        <div className="activityType">{activity.type}</div>
+                        <div className="activityRepo">{activity.repo}</div>
+                        <div className="activityTime">{activity.time}</div>
+                      </div>
+                    ))
+                  ) : (
+                      <div className="activityLoading">Loading...</div>
+                    )}
                 </div>
-                <div className="projectContent">
-                  <h3 className="projectTitle">{p.name}</h3>
-                  <p className="projectDesc">{p.description}</p>
-                  <div className="techStack">
-                    {p.tech.map((t) => <span key={t} className="techBadge">{t}</span>)}
-                  </div>
-                </div>
-              </a>
-            ))}
+              </div>
+            </div>
           </div>
         </section>
 
