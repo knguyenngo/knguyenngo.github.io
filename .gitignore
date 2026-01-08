@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # extra border images
-./src/assets/extra_borders/
+src/assets/extra_borders/
