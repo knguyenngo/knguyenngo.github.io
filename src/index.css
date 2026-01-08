@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@700&family=Be+Vietnam+Pro:wght@700&family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 :root {
   --bg: #1a1f26;
@@ -23,7 +23,8 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: "Inter", system-ui, sans-serif;
+  //font-family: "Inter", system-ui, sans-serif;
+  font-family: "Poppins", sans-serif;
   overflow-x: hidden;
 }
 
@@ -121,7 +122,7 @@ body {
 
 .heroCard { 
   padding: 36px; 
-  background: var(--overlay); 
+  background: rgba(26, 31, 38, 0.5);
   border-radius: 8px; 
   box-shadow: 
     0 4px 24px var(--shadow),
@@ -136,9 +137,21 @@ body {
   display: grid; 
   grid-template-columns: 184px 1fr 260px; 
   gap: 40px; 
-  align-items: end;
+  align-items: start;
   position: relative;
   z-index: 1;
+}
+
+.heroRight {
+  padding-top: 0;
+}
+
+.headerTop { 
+  display: flex; 
+  align-items: center; 
+  gap: 16px; 
+  margin-bottom: 0;
+  margin-top: 0;
 }
 
 .heroLeft {
@@ -218,13 +231,6 @@ body {
   background: rgba(167, 192, 128, 0.15);
   border-radius: 4px;
   border: 1px solid var(--accent);
-}
-
-.headerTop { 
-  display: flex; 
-  align-items: center; 
-  gap: 16px; 
-  margin: 0; 
 }
 
 .title { 
@@ -381,14 +387,24 @@ body {
 
 .projectsContainer {
   padding: 36px;
-  background: rgba(26, 31, 38, 0.5);  /* Change 0.92 to 0.7 or lower */
+  background: rgba(26, 31, 38, 0.7);
   border-radius: 8px;
   box-shadow: 
     0 4px 24px var(--shadow),
     inset 0 1px 0 rgba(167, 192, 128, 0.1);
   border: 1px solid var(--border);
   backdrop-filter: blur(10px);
-  height: 100%;
+}
+
+.sidebarBox.activityBox {
+  background: rgba(26, 31, 38, 0.7);
+  padding: 36px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  box-shadow: 
+    0 4px 24px var(--shadow),
+    inset 0 1px 0 rgba(167, 192, 128, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .projectsSidebar {
@@ -397,27 +413,24 @@ body {
   gap: 16px;
 }
 
-.sidebarBox.activityBox {
-  background: rgba(26, 31, 38, 0.5);  /* Change 0.92 to 0.7 or lower */
-  padding: 36px 20px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  box-shadow: 
-    0 4px 24px var(--shadow),
-    inset 0 1px 0 rgba(167, 192, 128, 0.1);
-  backdrop-filter: blur(10px);
-  height: 100%;
-}
-
 .sectionHead h2 { 
   font-size: 1rem; 
   padding: 0 0 16px 0;
   color: var(--text-bright); 
   text-transform: uppercase; 
   border-left: 4px solid var(--accent);
-  padding-left: 16px;
+  padding-left: 14px;
   margin: 0 0 24px 0;
   letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.sidebarTitle { 
+  font-size: 1rem; 
+  color: var(--accent); 
+  text-transform: uppercase; 
+  letter-spacing: 1.5px; 
+  margin-bottom: 20px; 
   font-weight: 700;
 }
 
@@ -435,7 +448,7 @@ body {
   transition: all 0.3s ease;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px var(--shadow);
+  box-shadow: 0 4px 8px var(--shadow);
 }
 
 .projectCard:hover { 
@@ -559,7 +572,38 @@ body {
   .heroGrid { 
     grid-template-columns: 1fr; 
     justify-items: center; 
-    text-align: center; 
+    text-align: center;
+    align-items: center;
+  }
+  
+  .heroLeft {
+    align-items: center;
+  }
+  
+  .heroRight {
+    text-align: center;
+  }
+  
+  .headerTop {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .flagsRow {
+    justify-content: center;
+  }
+  
+  .bioBox {
+    text-align: left;
+  }
+  
+  .heroSidebar {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .profileGreetingWrapper {
+    justify-content: center;
   }
   
   .projectCard { 
@@ -576,6 +620,16 @@ body {
   
   .projectsWrapper {
     grid-template-columns: 1fr;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .profileFrame {
+    width: 160px;
+    height: 160px;
+    padding: 18px;
   }
 }
 

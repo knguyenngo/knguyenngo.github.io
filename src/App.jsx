@@ -12,27 +12,27 @@ const LINKS = {
 const projects = [
   { 
     name: "IoT Fridge Monitoring System", 
-    repo: "https://github.com/knguyenngo/iot-fridge",
-    description: "Design of a Raspberry Pi-based telemetry system for 14 community fridges. Ingests 100+ daily data points into AWS Timestream via Lambda.",
-    tech: ["Python", "AWS Lambda", "Raspberry Pi"]
+    repo: "https://github.com/knguyenngo/rvacf-admin-dashboard",
+    description: "Raspberry Pi-based telemetry system monitoring 14 community fridges across Richmond. Processes 100+ daily sensor readings through AWS Lambda and Timestream for real-time insights.",
+    tech: ["Python", "AWS", "Raspberry Pi"]
   },
   { 
     name: "Reddit Trending Topics Dashboard", 
-    repo: "https://github.com/knguyenngo/reddit-nlp-dashboard",
-    description: "Python ETL pipeline using Reddit API and Hugging Face NLP to cluster 3,000+ posts into interactive themes.",
+    repo: "https://github.com/knguyenngo/reddit-trending-topics",
+    description: "Automated ETL pipeline leveraging Reddit API and Hugging Face transformers to analyze and cluster 3,000+ posts into trending themes with interactive visualizations.",
     tech: ["Python", "NLP", "Airflow"]
   },
   { 
-    name: "Esports Tournament Analytics", 
-    repo: "https://github.com/knguyenngo/esports-stats",
-    description: "Consolidated Apex Legends data from Liquipedia into a MySQL schema with a React/PHP frontend visualization.",
-    tech: ["PHP", "MySQL", "BeautifulSoup"]
+    name: "Bilingual Pokédex for Generation 3", 
+    repo: "https://github.com/knguyenngo/gen3-bilingual-pokedex",
+    description: "Interactive dual-language Pokédex featuring all Generation 3 Pokémon with comprehensive stats, abilities, and type matchups in English and Vietnamese.",
+    tech: ["React", "TypeScript", "REST API"]
   },  
   { 
     name: "Esports Tournament Analytics", 
     repo: "https://github.com/knguyenngo/esports-stats",
-    description: "Consolidated Apex Legends data from Liquipedia into a MySQL schema with a React/PHP frontend visualization.",
-    tech: ["PHP", "MySQL", "BeautifulSoup"]
+    description: "Full-stack analytics platform aggregating competitive Apex Legends tournament data. Features MySQL backend with React/PHP frontend for performance tracking and statistical analysis.",
+    tech: ["PHP", "MySQL", "React"]
   }
 ];
 
@@ -93,12 +93,12 @@ export default function App() {
               <div className="profileFrame">
                 <img className="avatar" src="/headshot.jpg" alt="Khuong Nguyen" />
               </div>
-              <div className="statusBadge">???</div>
+              <div className="statusBadge">Somewhere.</div>
             </div>
 
             <div className="heroRight">
               <div className="headerTop">
-                <h1 className="title">Khuong Nguyen</h1>
+                <h1 className="title">Khương Nguyễn</h1>
               </div>
 
              <div className="flagsRow">
@@ -111,17 +111,12 @@ export default function App() {
               </div>
 
               <div className="bioBox">
-                Currently developing some full stack apps while keeping myself fresh. Mainly on ML and NLP type of topics.
+                I make stuff.
               </div>
 
             </div>
 
             <div className="heroSidebar">
-              <div className="profileGreetingWrapper">
-                <div className={`heroGreeting lang-${current.key}`} dir={current.dir}>
-                  {current.text}
-                </div>
-              </div>
 
               <div className="sidebarBox contactOnly">
                 <div className="sidebarTitle">Contact</div>
