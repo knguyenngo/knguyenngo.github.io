@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import "./index.css";
 import backImg from "./assets/bg.gif";
+import projectImg_1 from "../public/iot.png";
+import projectImg_2 from "../public/reddit.png";
+import projectImg_3 from "../public/pokemon.png";
+import projectImg_4 from "../public/ALGS.png";
 
 const LINKS = {
   github: "https://github.com/knguyenngo",
@@ -14,25 +18,29 @@ const projects = [
     name: "IoT Fridge Monitoring System", 
     repo: "https://github.com/knguyenngo/rvacf-admin-dashboard",
     description: "Raspberry Pi-based telemetry system monitoring 14 community fridges across Richmond. Processes 100+ daily sensor readings through AWS Lambda and Timestream for real-time insights.",
-    tech: ["Python", "AWS", "Raspberry Pi"]
+    tech: ["Python", "AWS", "Raspberry Pi"],
+    image: projectImg_1
   },
   { 
     name: "Reddit Trending Topics Dashboard", 
     repo: "https://github.com/knguyenngo/reddit-trending-topics",
     description: "Automated ETL pipeline leveraging Reddit API and Hugging Face transformers to analyze and cluster 3,000+ posts into trending themes with interactive visualizations.",
-    tech: ["Python", "NLP", "Airflow"]
+    tech: ["Python", "NLP", "Airflow"],
+    image: projectImg_2
   },
   { 
     name: "Bilingual Pokédex for Generation 3", 
     repo: "https://github.com/knguyenngo/gen3-bilingual-pokedex",
     description: "Interactive dual-language Pokédex featuring all Generation 3 Pokémon with comprehensive stats, abilities, and type matchups in English and Vietnamese.",
-    tech: ["React", "TypeScript", "REST API"]
+    tech: ["React", "TypeScript", "REST API"],
+    image: projectImg_3
   },  
   { 
     name: "Esports Tournament Analytics", 
     repo: "https://github.com/knguyenngo/esports-stats",
     description: "Full-stack analytics platform aggregating competitive Apex Legends tournament data. Features MySQL backend with React/PHP frontend for performance tracking and statistical analysis.",
-    tech: ["PHP", "MySQL", "React"]
+    tech: ["PHP", "MySQL", "React"],
+    image: projectImg_4
   }
 ];
 
@@ -86,7 +94,6 @@ export default function App() {
             <a href="#projects">Showcase</a>
           </nav>
         </header>
-
         <section className="heroCard">
           <div className="heroGrid">
             <div className="heroLeft">
@@ -95,29 +102,22 @@ export default function App() {
               </div>
               <div className="statusBadge">Somewhere.</div>
             </div>
-
             <div className="heroRight">
               <div className="headerTop">
                 <h1 className="title">Khương Nguyễn</h1>
               </div>
-
              <div className="flagsRow">
                <span className="flag">🇻🇳</span>
                <span className="flag">🇵🇸</span>
              </div>
-
               <div className="subHeader">
                 Full Stack Software Developer <br/>
               </div>
-
               <div className="bioBox">
                 I make stuff.
               </div>
-
             </div>
-
             <div className="heroSidebar">
-
               <div className="sidebarBox contactOnly">
                 <div className="sidebarTitle">Contact</div>
                 <div className="iconLinksRow centered">
@@ -134,9 +134,7 @@ export default function App() {
               </div>
             </div>
           </div>
-
         </section>
-
         <section className="section" id="projects">
           <div className="projectsWrapper">
             <div className="projectsContainer">
@@ -147,7 +145,7 @@ export default function App() {
                 {projects.map((p, idx) => (
                   <a key={`${p.name}-${idx}`} className="projectCard" href={p.repo} target="_blank" rel="noreferrer">
                     <div className="projectImage">
-                      <div className="imgPlaceholder">Showcase Image</div>
+                      <img className="imgPlaceholder" src={p.image} alt={p.name}/>
                     </div>
                     <div className="projectContent">
                       <h3 className="projectTitle">{p.name}</h3>
@@ -160,7 +158,6 @@ export default function App() {
                 ))}
               </div>
             </div>
-
             <div className="projectsSidebar">
               <div className="sidebarBox activityBox">
                 <div className="sidebarTitle">Recent Activity</div>
@@ -181,7 +178,6 @@ export default function App() {
             </div>
           </div>
         </section>
-
         <footer className="footer">
           <span>© {new Date().getFullYear()} Khuong Nguyen</span>
         </footer>

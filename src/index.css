@@ -462,17 +462,6 @@ body {
   position: relative;
 }
 
-.imgPlaceholder { 
-  height: 100%; 
-  display: grid; 
-  place-items: center; 
-  background: var(--bg-elevated); 
-  font-size: 0.75rem; 
-  color: var(--text-dim);
-  border-right: 1px solid var(--border);
-  min-height: 160px;
-}
-
 .projectContent { 
   padding: 20px 24px; 
 }
@@ -642,4 +631,13 @@ body {
 
 .flag {
   font-size: 1rem;
+}
+
+.imgPlaceholder { 
+  width: 240px;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  background: var(--bg-elevated); 
+  border-right: 1px solid var(--border);
 }
