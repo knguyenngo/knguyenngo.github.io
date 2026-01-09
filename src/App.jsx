@@ -31,7 +31,7 @@ const projects = [
   { 
     name: "Bilingual Pokédex for Generation 3", 
     repo: "https://github.com/knguyenngo/gen3-bilingual-pokedex",
-    description: "Interactive dual-language Pokédex featuring all Generation 3 Pokémon with comprehensive stats, abilities, and type matchups in English and Vietnamese.",
+    description: "Interactive dual-language Pokédex featuring all Generation 3 Pokémon with comprehensive stats, abilities, and type matchups in English and Japanese.",
     tech: ["React", "TypeScript", "REST API"],
     image: projectImg_3
   },  
