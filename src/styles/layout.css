@@ -1,0 +1,17 @@
+.wrap { 
+  max-width: var(--max); 
+  margin: auto; 
+  padding: 60px 24px; 
+  position: relative;
+  z-index: 1;
+}
+
+.section { 
+  margin-top: 40px; 
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    padding: 40px 16px;
+  }
+}

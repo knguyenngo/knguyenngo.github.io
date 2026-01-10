@@ -1,0 +1,8 @@
+@import './variables.css';
+@import './base.css';
+@import './layout.css';
+@import './components/header.css';
+@import './components/hero.css';
+@import './components/projects.css';
+@import './components/activity.css';
+@import './components/footer.css';

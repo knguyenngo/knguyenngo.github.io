@@ -1,0 +1,47 @@
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+.bg {
+  position: fixed; 
+  inset: 0; 
+  z-index: -1;
+  background: var(--bg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow: hidden;
+}
+
+.bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: inherit;
+  background-size: inherit;
+  background-position: inherit;
+  background-attachment: inherit;
+  opacity: 0.15;
+  filter: blur(2px);
+  z-index: 1;
+}
+
+.bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.4) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 0, 0, 0) 4px,
+      rgba(0, 0, 0, 0.4) 6px
+    );
+  pointer-events: none;
+  z-index: 2;
+}

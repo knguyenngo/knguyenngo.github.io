@@ -1,0 +1,43 @@
+.brand { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 32px; 
+}
+
+.logo { 
+  padding: 12px 16px; 
+  font-weight: 900; 
+  font-size: 1.1rem;
+  background: var(--bg-elevated); 
+  color: var(--accent); 
+  border: 2px solid var(--accent); 
+  border-radius: 6px;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: all 0.2s ease;
+}
+
+.logo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.nav { 
+  display: flex; 
+  gap: 16px; 
+  align-items: center; 
+}
+
+.nav a { 
+  text-decoration: none; 
+  color: var(--text); 
+  font-size: 0.9rem; 
+  font-weight: 500;
+  text-transform: uppercase; 
+  letter-spacing: 0.5px;
+  transition: color 0.2s ease;
+}
+
+.nav a:hover {
+  color: var(--accent);
+}

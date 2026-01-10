@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #1a1f26;
+  --bg-card: #252b35;
+  --bg-elevated: #2d3541;
+  --text: #d3c6aa;
+  --text-dim: #8b96a0;
+  --text-bright: #e6d9b9;
+  --accent: #a7c080;
+  --accent-hover: #b5ce8f;
+  --accent2: #dbbc7f;
+  --highlight: #e67e80;
+  --border: rgba(167, 192, 128, 0.2);
+  --border-hover: rgba(167, 192, 128, 0.4);
+  --link: #7fbbb3;
+  --overlay: rgba(26, 31, 38, 0.92);
+  --shadow: rgba(0, 0, 0, 0.5);
+  --max: 1100px;
+}

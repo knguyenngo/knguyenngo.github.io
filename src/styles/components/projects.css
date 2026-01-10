@@ -1,0 +1,126 @@
+.projectsWrapper {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 20px;
+  align-items: start;
+}
+
+.projectsContainer {
+  padding: 36px;
+  background: rgba(26, 31, 38, 0.7);
+  border-radius: 8px;
+  box-shadow: 
+    0 4px 24px var(--shadow),
+    inset 0 1px 0 rgba(167, 192, 128, 0.1);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+
+.projectsSidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionHead h2 { 
+  font-size: 1rem; 
+  padding: 0 0 16px 0;
+  color: var(--text-bright); 
+  text-transform: uppercase; 
+  border-left: 4px solid var(--accent);
+  padding-left: 14px;
+  margin: 0 0 24px 0;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.projectGrid { 
+  display: grid; 
+  gap: 16px; 
+}
+
+.projectCard { 
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card); 
+  text-decoration: none; 
+  border: 1px solid var(--border); 
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px var(--shadow);
+}
+
+.projectCard:hover { 
+  background: var(--bg-elevated); 
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(167, 192, 128, 0.2);
+}
+
+.projectImage {
+  position: relative;
+  width: 100%;
+}
+
+.projectContent { 
+  padding: 20px 24px; 
+}
+
+.projectTitle { 
+  color: var(--link); 
+  font-size: 1.1rem; 
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.projectDesc { 
+  font-size: 0.9rem; 
+  color: var(--text); 
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.techStack { 
+  display: flex; 
+  gap: 10px; 
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.techBadge { 
+  font-family: "Roboto Mono", monospace; 
+  font-size: 0.7rem; 
+  color: var(--accent);
+  background: rgba(167, 192, 128, 0.1);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(167, 192, 128, 0.3);
+  font-weight: 500;
+}
+
+.imgPlaceholder { 
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  background: var(--bg-elevated); 
+  border-bottom: 1px solid var(--border);
+}
+
+@media (max-width: 900px) {
+  .projectsWrapper {
+    grid-template-columns: 1fr;
+  }
+  
+  .projectsContainer {
+    padding: 24px;
+  }
+  
+  .imgPlaceholder {
+    width: 100%;
+    height: 200px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
