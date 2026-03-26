@@ -24,9 +24,17 @@ export default function Header({ onTermOpen }: { onTermOpen?: () => void }) {
   }, []);
 
   useEffect(() => {
-    fetch('https://ipapi.co/json/')
+    fetch('https://ipwho.is/')
       .then((r) => r.json())
-      .then((d) => setGeo({ ip: d.ip, city: d.city, region: d.region_code, country_code: d.country_code }))
+      .then((d) => {
+        if (!d.success) return;
+        setGeo({
+          ip: d.ip,
+          city: d.city ?? '???',
+          region: d.region_code ?? d.region ?? '??',
+          country_code: d.country_code ?? '??',
+        });
+      })
       .catch(() => {});
   }, []);
 
