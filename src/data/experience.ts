@@ -11,7 +11,7 @@ export interface ExperienceEntry {
 
 export const experience: ExperienceEntry[] = [
   {
-    period: '[2026–NOW]',
+    period: '[2026]',
     status: 'RUNNING',
     colorVariant: 'primary',
     role: 'CTO',
@@ -22,7 +22,7 @@ export const experience: ExperienceEntry[] = [
     logo: 'jayret.png',
   },
   {
-    period: '[FEB 2026–NOW]',
+    period: '[2026]',
     status: 'RUNNING',
     colorVariant: 'primary',
     role: 'SOFTWARE ENGINEER INTERN',
@@ -33,7 +33,7 @@ export const experience: ExperienceEntry[] = [
     logo: 'running-name.png',
   },
   {
-    period: '[OCT 2024–JAN 2025]',
+    period: '[2024–2025]',
     status: 'SUCCESS',
     colorVariant: 'secondary',
     role: 'SOFTWARE ENGINEER INTERN',
@@ -44,7 +44,7 @@ export const experience: ExperienceEntry[] = [
     logo: 'nimbus-labs.png',
   },
   {
-    period: '[2021–2025]',
+    period: '[2022–2025]',
     status: 'INIT',
     role: 'B.S. COMPUTER SCIENCE',
     company: 'VIRGINIA COMMONWEALTH UNIVERSITY',
