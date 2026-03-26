@@ -1,11 +1,12 @@
 // src/data/projects.ts
 export const projects = [
-  { 
-    name: "IoT Fridge Monitoring System", 
+  {
+    name: "IoT Fridge Monitoring System",
     repo: "https://github.com/knguyenngo/rvacf-admin-dashboard",
     description: "Raspberry Pi-based telemetry system monitoring 14 community fridges across Richmond. Processes 100+ daily sensor readings through AWS Lambda and Timestream for real-time insights.",
     tech: ["Python", "AWS", "Raspberry Pi"],
-    image: "iot.png"
+    image: "iot.png",
+    imagePosition: "center 40%"
   },
   { 
     name: "Reddit Trending Topics Dashboard", 

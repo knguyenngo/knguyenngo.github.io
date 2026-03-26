@@ -1,20 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+/* Blood Moon Terminal — Tokyo Night base */
+@theme {
+  /* ── Surfaces ─────────────────────────────────────────── */
+  --color-surface:                  #1a1b26;   /* The Void — main page bg        */
+  --color-surface-dim:              #1a1b26;
+  --color-surface-container-lowest: #0d0e17;   /* deepest punched-out areas      */
+  --color-surface-container-low:    #13131a;   /* subtle recessed areas          */
+  --color-surface-container:        #16161e;   /* The Nebula — panels/status bars */
+  --color-surface-container-high:   #1e2030;   /* elevated cards                 */
+  --color-surface-container-highest:#24283b;   /* nested items                   */
+  --color-surface-bright:           #1e2030;   /* section header bars            */
+  --color-surface-variant:          #364a82;   /* Deep Space — selection/hover   */
+  --color-background:               #1a1b26;
 
-:root {
-  --bg: #1a1f26;
-  --bg-card: #252b35;
-  --bg-elevated: #2d3541;
-  --text: #d3c6aa;
-  --text-dim: #8b96a0;
-  --text-bright: #e6d9b9;
-  --accent: #a7c080;
-  --accent-hover: #b5ce8f;
-  --accent2: #dbbc7f;
-  --highlight: #e67e80;
-  --border: rgba(167, 192, 128, 0.2);
-  --border-hover: rgba(167, 192, 128, 0.4);
-  --link: #7fbbb3;
-  --overlay: rgba(26, 31, 38, 0.92);
-  --shadow: rgba(0, 0, 0, 0.5);
-  --max: 1100px;
+  /* ── Text ─────────────────────────────────────────────── */
+  --color-on-background:            #c0caf5;   /* Comet — standard body text     */
+  --color-on-surface:               #c0caf5;
+  --color-on-surface-variant:       #a9b1d6;   /* slightly dimmed body text      */
+
+  /* ── Primary — Blood Moon Red ────────────────────────── */
+  --color-primary:                  #f7768e;   /* headings, active borders       */
+  --color-primary-dim:              #e0637a;
+  --color-primary-fixed:            #ffc0cb;
+  --color-primary-fixed-dim:        #f9a8b4;
+  --color-primary-container:        #2d1b22;   /* dark red tint for badges       */
+  --color-on-primary:               #1a1b26;
+  --color-on-primary-container:     #f7768e;
+  --color-inverse-primary:          #8b3045;
+
+  /* ── Secondary — Nebula Blue ─────────────────────────── */
+  --color-secondary:                #7aa2f7;   /* links, system vitals           */
+  --color-secondary-dim:            #6690e0;
+  --color-secondary-fixed:          #c4d4ff;
+  --color-secondary-fixed-dim:      #a8bcff;
+  --color-secondary-container:      #1a2040;   /* dark blue tint for badges      */
+  --color-on-secondary:             #1a1b26;
+  --color-on-secondary-container:   #7aa2f7;
+
+  /* ── Borders ─────────────────────────────────────────── */
+  --color-outline:                  #414868;   /* Cold Grey — all pane borders   */
+  --color-outline-variant:          #292e42;   /* subtle structural wiring       */
+
+  /* ── Warning / Critical — Magma Orange ──────────────── */
+  --color-error:                    #ff9e64;   /* HIGH_ALERT, error logs         */
+  --color-error-container:          #2d1f0e;
+  --color-on-error:                 #1a1b26;
+  --color-on-error-container:       #ff9e64;
+
+  /* ── Inverse ──────────────────────────────────────────── */
+  --color-inverse-surface:          #c0caf5;
+  --color-inverse-on-surface:       #1a1b26;
+  --color-surface-tint:             #f7768e;
+
+  /* ── Typography ───────────────────────────────────────── */
+  --font-sans: "Space Grotesk", "Hack Nerd Font Mono", sans-serif;
+  --font-mono: "Space Grotesk", "Hack Nerd Font Mono", monospace;
+
+  /* ── Radius — keep sharp ─────────────────────────────── */
+  --radius:    0.125rem;
+  --radius-sm: 0.0625rem;
+  --radius-md: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.375rem;
 }

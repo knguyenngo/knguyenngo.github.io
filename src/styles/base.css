@@ -1,23 +1,34 @@
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: "Poppins", sans-serif;
-  overflow-x: hidden;
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-.bg {
-  position: fixed; 
-  inset: 0; 
+body {
+  margin: 0;
+  background: #1a1b26;
+  color: #c0caf5;
+  font-family: "Space Grotesk", "Hack Nerd Font Mono", sans-serif;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Text selection — Deep Space */
+::selection {
+  background: #364a82;
+  color: #c0caf5;
+}
+
+/* Animated background + dark tint overlay */
+.bg-overlay {
+  position: fixed;
+  inset: 0;
   z-index: -1;
-  background: var(--bg);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  overflow: hidden;
+  background-repeat: no-repeat;
 }
-
-.bg::before {
+.bg-overlay::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -25,23 +36,84 @@ body {
   background-size: inherit;
   background-position: inherit;
   background-attachment: inherit;
-  opacity: 0.15;
+  opacity: 0.10;
   filter: blur(2px);
-  z-index: 1;
 }
-
-.bg::after {
+.bg-overlay::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: 
+  /* 0.96 opacity deep glass effect */
+  background: rgba(22, 22, 30, 0.72);
+  background-image:
     repeating-linear-gradient(
       0deg,
-      rgba(0, 0, 0, 0.4) 0px,
-      rgba(0, 0, 0, 0) 2px,
-      rgba(0, 0, 0, 0) 4px,
-      rgba(0, 0, 0, 0.4) 6px
+      rgba(0,0,0,0.18) 0px, rgba(0,0,0,0) 2px,
+      rgba(0,0,0,0)    4px, rgba(0,0,0,0.18) 6px
     );
   pointer-events: none;
-  z-index: 2;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* Hide scrollbar on header while keeping scroll functional */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Terminal glow — Blood Moon Red */
+.terminal-glow {
+  text-shadow:
+    0 0 8px  rgba(247, 118, 142, 0.6),
+    0 0 20px rgba(247, 118, 142, 0.25);
+}
+
+/* Reactive glow on active status indicators */
+.status-glow {
+  text-shadow: 0 0 6px rgba(247, 118, 142, 0.7);
+}
+
+/* Floating scanline */
+.scanline {
+  width: 100%;
+  height: 120px;
+  z-index: 200;
+  background: linear-gradient(0deg, rgba(122, 162, 247, 0.03) 0%, transparent 100%);
+  opacity: 0.15;
+  position: fixed;
+  pointer-events: none;
+  animation: scanMove 8s linear infinite;
+}
+@keyframes scanMove {
+  0%   { top: -120px; }
+  100% { top: 100vh; }
+}
+
+.avatar-filter {
+  filter: grayscale(0.4) sepia(0.1) brightness(0.85) contrast(1.15);
+}
+
+/* Carousel slide animations */
+@keyframes slideInFromRight {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInFromLeft {
+  from { opacity: 0; transform: translateX(-28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.proj-slide-right { animation: slideInFromRight 180ms ease-out; }
+.proj-slide-left  { animation: slideInFromLeft  180ms ease-out; }
+
+/* News ticker */
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 40s linear infinite;
+}
+.ticker-track:hover {
+  animation-play-state: paused;
 }
