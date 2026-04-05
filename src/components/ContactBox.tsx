@@ -1,7 +1,7 @@
 const LINKS = {
   github: "https://github.com/knguyenngo",
   linkedin: "https://linkedin.com/in/knguyenngo",
-  email: "khuongnguyenngo@gmail.com",
+  email: "knguyenngo@proton.me",
 };
 
 export default function ContactBox() {

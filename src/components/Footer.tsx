@@ -24,7 +24,7 @@ export default function Footer() {
           LINKEDIN
         </a>
         <a
-          href="mailto:khuongnguyenngo@gmail.com"
+          href="mailto:knguyenngo@proton.me"
           className="font-mono text-[10px] uppercase tracking-widest text-outline hover:text-secondary transition-colors duration-150"
         >
           MAIL
