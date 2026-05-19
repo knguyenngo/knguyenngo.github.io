@@ -1,9 +1,15 @@
+import { useEffect } from 'react';
 import ContactBox from './ContactBox';
 import borderFrame from '../assets/border.png';
 import { useScramble } from '../hooks/useScramble';
 
 export default function HeroCard() {
   const { display, scramble, reset } = useScramble('Khương Nguyễn');
+
+  useEffect(() => {
+    const id = setTimeout(scramble, 350);
+    return () => clearTimeout(id);
+  }, [scramble]);
 
   return (
     <section id="bio" className="border-2 border-outline bg-surface-container">
@@ -42,25 +48,27 @@ export default function HeroCard() {
         {/* Info */}
         <div className="flex flex-col gap-5">
           <div className="font-mono">
-            <div className="text-xs text-on-surface-variant">
+            <div className="text-xs text-on-surface-variant text-center md:text-left">
               <span className="text-secondary">$</span>{' '}
               <span className="text-on-surface">whoami</span>
             </div>
             <h1
-              className="text-3xl font-bold text-primary mt-3 terminal-glow leading-tight cursor-default select-none"
+              className="text-3xl font-bold text-primary mt-3 terminal-glow leading-tight cursor-default select-none text-center md:text-left"
               onMouseEnter={scramble}
               onMouseLeave={reset}
             >
               {display}
               <span className="ml-2 text-xl not-italic">🇻🇳 🇵🇸</span>
             </h1>
-            <div className="font-mono text-[11px] text-on-surface-variant mt-1 uppercase tracking-widest">
-              FULL_STACK_SOFTWARE_DEVELOPER
+            <div className="font-mono text-[11px] text-on-surface-variant mt-1 uppercase tracking-widest text-center md:text-left">
+              FULL_STACK_ENGINEER
             </div>
-            <p className="text-on-surface-variant text-sm leading-relaxed mt-4 max-w-2xl border-l-4 border-primary-container pl-4 py-1">
-              Building data-driven web tools that make complex datasets accessible. Focused on ETL
-              pipelines and NLP — currently growing in machine learning and applied AI.
-            </p>
+            <div className="mt-4 max-w-2xl flex flex-col gap-1 text-center md:text-left">
+              <span className="text-primary font-bold text-base">I make stuff.</span>
+              <p className="text-on-surface text-base leading-relaxed">
+                Full-stack engineer who ships systems that think, moves fast, and builds for the people who actually need it.
+              </p>
+            </div>
           </div>
 
           <ContactBox />

@@ -6,7 +6,7 @@ const LINKS = {
 
 export default function ContactBox() {
   return (
-    <div className="flex flex-wrap gap-3 font-mono text-xs">
+    <div className="flex flex-wrap gap-3 font-mono text-xs justify-center md:justify-start">
       <a
         href={LINKS.github}
         target="_blank"

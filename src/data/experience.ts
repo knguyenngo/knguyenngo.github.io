@@ -7,6 +7,9 @@ export interface ExperienceEntry {
   location: string;
   summary: string;
   logo?: string;
+  tech?: string[];
+  url?: string;
+  roleLabel?: string;
 }
 
 export const experience: ExperienceEntry[] = [
@@ -14,12 +17,14 @@ export const experience: ExperienceEntry[] = [
     period: '[2026]',
     status: 'RUNNING',
     colorVariant: 'primary',
-    role: 'SOFTWARE CONSULTANT',
-    company: '??? LLC',
+    role: 'FULL STACK SOFTWARE ENGINEER',
+    company: 'VMT',
     location: 'REMOTE',
     summary:
-    "I'm consulting independently at the intersection of strategy and execution — not just advising, but building. I'm currently developing a full-stack platform for a medical transportation company, giving them a web presence and the private-sector client access they never had. My code ships and their business grows.",
+    "Medical transportation is life-critical and underserved. Built their entire platform from scratch — web presence, booking, dispatch, encrypted patient data. Now they can reach clients they never could before and actually run the operation.",
     logo: 'self.png',
+    tech: ['TypeScript', 'Next.js', 'Supabase', 'PostgreSQL'],
+    url: 'https://virginmedtransportation.com/',
   },
   {
     period: '[2026]',
@@ -29,8 +34,10 @@ export const experience: ExperienceEntry[] = [
     company: 'RUNNING NAME LLC',
     location: 'RICHMOND, VA',
     summary:
-    "This is where I got my first real taste of owning something end-to-end. I came in and ended up rebuilding their entire CRM and client intake system — moved the company off spreadsheets into a proper Next.js and Supabase platform with automated document workflows. The biggest thing I took away was learning how to translate messy, real-world business problems into clean technical solutions and actually ship them in production.",
+    "Small business helping other small businesses. Their ops were buried in spreadsheets — built them a full CRM so they could stop managing data and start focusing on the mission.",
     logo: 'running-name.png',
+    tech: ['TypeScript', 'Next.js', 'Supabase', 'PostgreSQL'],
+    url: 'https://eduruna-crm.vercel.app/',
   },
   {
     period: '[2024–2025]',
@@ -40,7 +47,7 @@ export const experience: ExperienceEntry[] = [
     company: 'NIMBUS LABS LLC',
     location: 'JERSEY CITY, NJ',
     summary:
-    "My first industry role — I worked on a RAG AI chatbot with a small team and got thrown into the deep end pretty quickly. I spent most of my time in the data layer tracking down a schema issue that was causing duplicate records, and built Streamlit tooling so the team could monitor the chatbot without pulling engineers in every time. I also got to design our deployment pipeline here, which is where I first got real hands-on time with AWS infrastructure.",
+    "AI integration for Point of Sale systems — built the RAG pipeline that made the data actually retrievable and the insights actually useful.",
     logo: 'nimbus-labs.png',
   },
   {
@@ -50,7 +57,8 @@ export const experience: ExperienceEntry[] = [
     company: 'VIRGINIA COMMONWEALTH UNIVERSITY',
     location: 'RICHMOND, VA',
     summary:
-    "I studied CS at VCU with a focus on machine learning, NLP, and data systems — the areas I knew I wanted to build in. Outside coursework I was part of the Linux User Group, which honestly shaped how I think about computing more than any class did. VCU is where I went from someone who could code to someone who understood why things work the way they do — graduated Cum Laude.",
+    "Graduated Cum Laude. Focused on machine learning, NLP, and data systems.",
     logo: 'vcu.png',
+    roleLabel: 'CS @ VCU',
   },
 ];

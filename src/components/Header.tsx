@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const TICKER_ITEMS = [
-  'OPEN TO OPPORTUNITIES — FULL STACK / DATA ENGINEER ROLES',
-  'لماذا تترجم هذا؟ اذهب للعمل واتركنى بسلام',
-  'CURRENTLY BUILDING – hitting 10x milestones on an eco round budget',
-  '10X MAXXXING – deprecating legacy habits and high-ping energy',
+  'BURNING ALL MY TOKENS',
 ];
 
 interface GeoInfo {
@@ -24,18 +21,31 @@ export default function Header({ onTermOpen }: { onTermOpen?: () => void }) {
   }, []);
 
   useEffect(() => {
-    fetch('https://ipwho.is/')
+    fetch('https://ipapi.co/json/')
       .then((r) => r.json())
       .then((d) => {
-        if (!d.success) return;
+        if (!d.ip) throw new Error();
         setGeo({
           ip: d.ip,
           city: d.city ?? '???',
-          region: d.region_code ?? d.region ?? '??',
+          region: d.region_code ?? '??',
           country_code: d.country_code ?? '??',
         });
       })
-      .catch(() => {});
+      .catch(() =>
+        fetch('https://ipwho.is/')
+          .then((r) => r.json())
+          .then((d) => {
+            if (!d.success) return;
+            setGeo({
+              ip: d.ip,
+              city: d.city ?? '???',
+              region: d.region_code ?? d.region ?? '??',
+              country_code: d.country_code ?? '??',
+            });
+          })
+          .catch(() => {})
+      );
   }, []);
 
   const hms  = time.toLocaleTimeString('en-US', { hour12: false });
@@ -45,10 +55,10 @@ export default function Header({ onTermOpen }: { onTermOpen?: () => void }) {
     .replace(/,/g, '');
 
   return (
-    <div className="fixed top-0 left-0 w-full z-50 flex flex-col">
+    <div className="launch-header fixed top-0 left-0 w-full z-50 flex flex-col">
 
       {/* Row 1 — stat modules (scrollable on mobile) */}
-      <div className="bg-surface-container/80 backdrop-blur-sm border-b border-outline/50 h-8 flex items-center px-4 overflow-x-auto scrollbar-none">
+      <div className="footer-texture bg-surface-container/80 backdrop-blur-sm border-b border-outline/50 h-8 flex items-center px-4 overflow-x-auto scrollbar-none">
         <div className="flex items-center gap-0 font-mono text-[10px] divide-x divide-outline/40 shrink-0">
 
           {onTermOpen && (
@@ -98,14 +108,11 @@ export default function Header({ onTermOpen }: { onTermOpen?: () => void }) {
         </div>
         <div className="overflow-hidden flex-1">
           <div className="ticker-track">
-            {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => {
-              const isOpportunity = item === 'OPEN TO OPPORTUNITIES — FULL STACK / DATA ENGINEER ROLES';
-              return (
-                <span key={i} className={`font-mono text-[9px] uppercase tracking-wider px-6 whitespace-nowrap ${isOpportunity ? 'text-primary animate-pulse' : 'text-on-surface-variant'}`}>
-                  <span className="text-outline mr-2">◆</span>{item}
-                </span>
-              );
-            })}
+            {Array.from({ length: 16 }, (_, i) => (
+              <span key={i} className="font-mono text-[9px] uppercase tracking-wider px-6 whitespace-nowrap text-on-surface-variant">
+                <span className="text-outline mr-2">◆</span>{TICKER_ITEMS[0]}
+              </span>
+            ))}
           </div>
         </div>
       </div>

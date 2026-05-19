@@ -104,6 +104,52 @@ a { text-decoration: none; color: inherit; }
 .proj-slide-right { animation: slideInFromRight 180ms ease-out; }
 .proj-slide-left  { animation: slideInFromLeft  180ms ease-out; }
 
+/* ── Launch entrance animations ──────────────────────────── */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes bootFlash {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+.launch-header   { animation: fadeInDown 0.4s  cubic-bezier(0.22,1,0.36,1) both; }
+.launch-hero     { animation: fadeInUp   0.55s cubic-bezier(0.22,1,0.36,1) 0.12s both; }
+.launch-bootlog  { animation: fadeInUp   0.55s cubic-bezier(0.22,1,0.36,1) 0.28s both; }
+.launch-projects { animation: fadeInUp   0.55s cubic-bezier(0.22,1,0.36,1) 0.44s both; }
+.launch-footer   { animation: fadeIn     0.5s  ease-out                    0.55s both; }
+
+.boot-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(ellipse 90% 60% at 50% 35%,
+    rgba(122, 162, 247, 0.28) 0%,
+    rgba(26, 27, 38, 0.92) 70%
+  );
+  animation: bootFlash 0.65s ease-out forwards;
+  pointer-events: none;
+}
+
+/* Footer dot-grid texture */
+.footer-texture {
+  background-image:
+    radial-gradient(circle, rgba(122, 162, 247, 0.18) 1px, transparent 1px),
+    radial-gradient(circle, rgba(247, 118, 142, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px, 48px 48px;
+  background-position: 0 0, 12px 12px;
+}
+
 /* News ticker */
 @keyframes ticker {
   0%   { transform: translateX(0); }

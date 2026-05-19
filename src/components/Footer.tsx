@@ -2,7 +2,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-surface border-t-4 border-surface-container flex flex-col items-center py-8 mt-4 w-full">
+    <footer className="footer-texture bg-surface border-t-4 border-surface-container flex flex-col items-center py-8 mt-4 w-full">
       <div className="font-mono text-[10px] uppercase tracking-widest text-secondary mb-3">
         SYS_REF: BUNNY_TERMINAL_{year}
       </div>

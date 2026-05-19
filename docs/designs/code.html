@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WAYBAR_SYS_V1.0 | PORTFOLIO_TERMINAL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-high": "#0c222e",
+              "surface-tint": "#b6cf8e",
+              "on-background": "#cfe9fd",
+              "background": "#070f14",
+              "secondary-fixed": "#ffdea0",
+              "surface": "#070f14",
+              "primary-fixed": "#d2eca8",
+              "error-container": "#7e2b17",
+              "on-tertiary-fixed": "#0c514b",
+              "surface-bright": "#0d2f41",
+              "on-surface-variant": "#95aec1",
+              "on-error": "#450900",
+              "inverse-on-surface": "#4e565d",
+              "primary": "#b6cf8e",
+              "on-secondary": "#2b1e00",
+              "tertiary-container": "#b9f7ee",
+              "tertiary-fixed-dim": "#b1eee6",
+              "primary-container": "#394d1a",
+              "on-secondary-fixed-variant": "#705825",
+              "surface-dim": "#070f14",
+              "secondary": "#b79a60",
+              "surface-container": "#0b1b25",
+              "surface-variant": "#0d2837",
+              "error": "#ed7f64",
+              "tertiary": "#e4fffa",
+              "secondary-dim": "#b79a60",
+              "on-secondary-container": "#dabb7e",
+              "outline-variant": "#324b5b",
+              "on-tertiary-fixed-variant": "#316e67",
+              "on-primary-fixed-variant": "#4d622d",
+              "tertiary-dim": "#b1eee6",
+              "error-dim": "#ba573f",
+              "secondary-container": "#4c3807",
+              "on-primary-container": "#c0d997",
+              "secondary-fixed-dim": "#f1d092",
+              "outline": "#60798a",
+              "on-tertiary": "#2b6962",
+              "surface-container-lowest": "#000000",
+              "primary-fixed-dim": "#c4dd9b",
+              "inverse-primary": "#506630",
+              "on-tertiary-container": "#22605a",
+              "on-surface": "#cfe9fd",
+              "surface-container-low": "#09151c",
+              "on-error-container": "#ff9b82",
+              "surface-container-highest": "#0d2837",
+              "tertiary-fixed": "#bffdf4",
+              "inverse-surface": "#f6faff",
+              "primary-dim": "#a8c181",
+              "on-primary": "#324614",
+              "on-secondary-fixed": "#513c0b",
+              "on-primary-fixed": "#314513"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Space Grotesk"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 14px;
+        }
+        body {
+            background-image: linear-gradient(rgba(11, 27, 37, 0.1) 1px, transparent 1px);
+            background-size: 100% 3px;
+            text-rendering: optimizeLegibility;
+        }
+        .terminal-glow {
+            text-shadow: 0 0 5px rgba(182, 207, 142, 0.4);
+        }
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 100;
+            background: linear-gradient(0deg, rgba(182, 207, 142, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+            opacity: 0.1;
+            position: fixed;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary selection:text-on-primary">
+<header class="bg-[#0b1b25] dark:bg-[#0b1b25] flex items-center justify-between w-full px-2 h-8 fixed top-0 z-50 border-b-2 border-[#60798a]">
+<div class="flex items-center">
+<div class="text-sm font-bold text-[#b6cf8e] border-r-2 border-[#b6cf8e] pr-4 mr-4 font-['Space_Grotesk'] font-mono tracking-tighter uppercase">WAYBAR_SYS_V1.0</div>
+<nav class="flex gap-1">
+<span class="text-[#070f14] bg-[#b6cf8e] px-2 py-0.5 font-bold font-['Space_Grotesk'] font-mono tracking-tighter uppercase text-xs">WS_01</span>
+<span class="text-[#60798a] hover:text-[#cfe9fd] px-2 py-0.5 font-['Space_Grotesk'] font-mono tracking-tighter uppercase text-xs cursor-pointer hover:bg-[#0d2837] transition-colors duration-150">WS_02</span>
+<span class="text-[#60798a] hover:text-[#cfe9fd] px-2 py-0.5 font-['Space_Grotesk'] font-mono tracking-tighter uppercase text-xs cursor-pointer hover:bg-[#0d2837] transition-colors duration-150">WS_03</span>
+<span class="text-[#60798a] hover:text-[#cfe9fd] px-2 py-0.5 font-['Space_Grotesk'] font-mono tracking-tighter uppercase text-xs cursor-pointer hover:bg-[#0d2837] transition-colors duration-150">WS_04</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 font-mono text-[10px] text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">memory</span> <span>RAM: 4.2G / 16G</span>
+<span class="material-symbols-outlined text-primary">speed</span> <span>CPU: 12%</span>
+<span class="material-symbols-outlined text-primary">schedule</span> <span>UP: 43D 2H</span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-[#b6cf8e] cursor-pointer hover:bg-[#0d2837] p-1">memory</span>
+<span class="material-symbols-outlined text-[#b6cf8e] cursor-pointer hover:bg-[#0d2837] p-1">speed</span>
+<span class="material-symbols-outlined text-[#b6cf8e] cursor-pointer hover:bg-[#0d2837] p-1">settings_power</span>
+</div>
+</div>
+</header>
+<main class="pt-12 px-4 max-w-6xl mx-auto flex flex-col gap-4">
+<section class="border-2 border-outline bg-surface-container relative">
+<div class="bg-surface-bright flex items-center justify-between px-3 py-1 border-b-2 border-outline">
+<span class="font-mono text-xs font-bold text-primary tracking-widest uppercase">~/HOME/KN/BIO.SH</span>
+<div class="flex gap-1">
+<div class="w-3 h-3 bg-outline"></div>
+<div class="w-3 h-3 bg-outline"></div>
+<div class="w-3 h-3 bg-primary"></div>
+</div>
+</div>
+<div class="p-6 grid md:grid-cols-[auto,1fr] gap-8">
+<div class="relative w-48 h-48 border-4 border-primary p-1 bg-surface-container-lowest">
+<img alt="System Operator Avatar" class="w-full h-full object-cover filter grayscale sepia brightness-90 contrast-125" data-alt="Professional portrait of a male developer with short hair and glasses, set against a dark moody studio background with green rim lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBElen8pWgv3WqhQFc4k4_X50ZoXWVMnKfufQZq-5gOdRa4Sfv9cSSsf-RNdG246hD4kSzHe7FhdUFHSmugZ8JLctbLeFQdXG1IahXz-DcGiK8Y95_q72JwQX1QYEuktgUFPB9EkcdVGCJu3hvxnA0zAfvONJ1OH3pOVNpUgUrOvUfsZtGpancXhW8cCFy7z0wTyJm1cHLUZNC2JHEX1jQ_5wT4dcwHI5Lfp67zKTN6xz4A0vES48FZ3JdD2HDuGm3hrdhmqrsoH8s"/>
+<div class="absolute -bottom-2 -right-2 bg-primary text-on-primary text-[10px] px-2 font-bold uppercase">VERIFIED_OPS</div>
+</div>
+<div class="flex flex-col gap-4">
+<div class="font-mono">
+<span class="text-secondary">$</span> <span class="text-on-surface">whoami</span>
+<h1 class="text-3xl font-bold text-primary mt-2 terminal-glow">K_NEURAL_V4.0</h1>
+<p class="text-on-surface-variant mt-2 leading-relaxed max-w-2xl">
+                            Full-stack engineer operating in the intersection of low-level systems and high-end interfaces. Specializing in building resilient, high-density terminal architectures and distributed systems.
+                        </p>
+</div>
+<div class="flex flex-wrap gap-4 mt-4 font-mono text-xs">
+<a class="flex items-center gap-2 border border-outline-variant px-3 py-2 hover:bg-surface-container-highest transition-all group" href="#">
+<span class="text-secondary">./GITHUB</span>
+<span class="text-on-surface-variant group-hover:text-primary">k-neural-ops</span>
+</a>
+<a class="flex items-center gap-2 border border-outline-variant px-3 py-2 hover:bg-surface-container-highest transition-all group" href="#">
+<span class="text-secondary">./LINKEDIN</span>
+<span class="text-on-surface-variant group-hover:text-primary">kn-systems</span>
+</a>
+<a class="flex items-center gap-2 border border-outline-variant px-3 py-2 hover:bg-surface-container-highest transition-all group" href="#">
+<span class="text-secondary">./MAIL</span>
+<span class="text-on-surface-variant group-hover:text-primary">ops@system.io</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<section class="border-2 border-outline bg-surface-container">
+<div class="bg-surface-bright flex items-center justify-between px-3 py-1 border-b-2 border-outline">
+<span class="font-mono text-xs font-bold text-primary tracking-widest uppercase">~/HOME/KN/SKILLS_MODULES</span>
+<span class="font-mono text-[10px] text-on-surface-variant">MODPROBE_LOADER_V2.1</span>
+</div>
+<div class="p-6 grid md:grid-cols-2 gap-x-12 gap-y-6">
+<div class="space-y-2">
+<div class="flex justify-between font-mono text-[10px] uppercase tracking-tighter">
+<span class="text-on-surface">DRV_REACT_KERNEL</span>
+<span class="text-primary">[ LOADED 92% ]</span>
+</div>
+<div class="h-4 bg-surface-container-lowest border border-outline-variant p-0.5">
+<div class="h-full bg-primary" style="width: 92%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-mono text-[10px] uppercase tracking-tighter">
+<span class="text-on-surface">DRV_TYPESCRIPT_STB</span>
+<span class="text-primary">[ LOADED 95% ]</span>
+</div>
+<div class="h-4 bg-surface-container-lowest border border-outline-variant p-0.5">
+<div class="h-full bg-primary" style="width: 95%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-mono text-[10px] uppercase tracking-tighter">
+<span class="text-on-surface">DRV_RUST_RUNTIME</span>
+<span class="text-secondary">[ LOADED 78% ]</span>
+</div>
+<div class="h-4 bg-surface-container-lowest border border-outline-variant p-0.5">
+<div class="h-full bg-secondary" style="width: 78%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-mono text-[10px] uppercase tracking-tighter">
+<span class="text-on-surface">DRV_GO_NETWORK</span>
+<span class="text-primary">[ LOADED 84% ]</span>
+</div>
+<div class="h-4 bg-surface-container-lowest border border-outline-variant p-0.5">
+<div class="h-full bg-primary" style="width: 84%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-mono text-[10px] uppercase tracking-tighter">
+<span class="text-on-surface">DRV_POSTGRES_DB</span>
+<span class="text-primary">[ LOADED 88% ]</span>
+</div>
+<div class="h-4 bg-surface-container-lowest border border-outline-variant p-0.5">
+<div class="h-full bg-primary" style="width: 88%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-mono text-[10px] uppercase tracking-tighter">
+<span class="text-on-surface">DRV_DOCKER_CONTAINER</span>
+<span class="text-primary">[ LOADED 90% ]</span>
+</div>
+<div class="h-4 bg-surface-container-lowest border border-outline-variant p-0.5">
+<div class="h-full bg-primary" style="width: 90%"></div>
+</div>
+</div>
+</div>
+</section>
+<section class="border-2 border-outline bg-surface-container">
+<div class="bg-surface-bright flex items-center justify-between px-3 py-1 border-b-2 border-outline">
+<span class="font-mono text-xs font-bold text-primary tracking-widest uppercase">~/HOME/KN/ACTIVE_PROCESSES</span>
+<span class="font-mono text-[10px] text-on-surface-variant">JOBS: 03</span>
+</div>
+<div class="p-6 grid gap-6">
+<div class="bg-surface-container-highest border border-outline-variant p-4 font-mono group hover:border-primary transition-colors">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-primary font-bold text-lg">PROJ_01: VOID_NET_SCANNER</h3>
+<p class="text-xs text-on-surface-variant mt-1">Real-time packet visualization engine with Rust backend.</p>
+</div>
+<span class="bg-primary-container text-primary text-[10px] px-2 py-0.5 border border-primary">STABLE</span>
+</div>
+<div class="bg-surface-container-lowest p-3 border-l-4 border-primary text-[11px] text-on-surface-variant leading-tight">
+<div class="text-secondary-dim mb-1">git log --oneline -n 2</div>
+<div>* 82f1a9b [FIX] optimized buffer overflow in stream reader</div>
+<div>* 4c0e211 [FEAT] implemented multi-threaded worker pool</div>
+</div>
+</div>
+<div class="bg-surface-container-highest border border-outline-variant p-4 font-mono group hover:border-secondary transition-colors">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-secondary font-bold text-lg">PROJ_02: FOREST_TERM_UI</h3>
+<p class="text-xs text-on-surface-variant mt-1">Component library for high-density terminal-style interfaces.</p>
+</div>
+<span class="bg-secondary-container text-secondary text-[10px] px-2 py-0.5 border border-secondary">RUNNING</span>
+</div>
+<div class="bg-surface-container-lowest p-3 border-l-4 border-secondary text-[11px] text-on-surface-variant leading-tight">
+<div class="text-secondary-dim mb-1">git log --oneline -n 2</div>
+<div>* a912dd5 [UPD] updated color tokens to everforest palette</div>
+<div>* 11bc90a [FIX] scroll alignment in virtualized lists</div>
+</div>
+</div>
+<div class="bg-surface-container-highest border border-outline-variant p-4 font-mono group hover:border-primary transition-colors">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-primary font-bold text-lg">PROJ_03: KRNL_SCHEDULER</h3>
+<p class="text-xs text-on-surface-variant mt-1">Custom task priority manager for distributed micro-services.</p>
+</div>
+<span class="bg-primary-container text-primary text-[10px] px-2 py-0.5 border border-primary">STABLE</span>
+</div>
+<div class="bg-surface-container-lowest p-3 border-l-4 border-primary text-[11px] text-on-surface-variant leading-tight">
+<div class="text-secondary-dim mb-1">git log --oneline -n 2</div>
+<div>* f662a21 [FEAT] added prometheus metrics exporter</div>
+<div>* e331b09 [DOC] completed system architecture documentation</div>
+</div>
+</div>
+</div>
+</section>
+<section class="border-2 border-outline bg-surface-container">
+<div class="bg-surface-bright flex items-center justify-between px-3 py-1 border-b-2 border-outline">
+<span class="font-mono text-xs font-bold text-primary tracking-widest uppercase">~/HOME/KN/BOOT_LOG</span>
+<span class="font-mono text-[10px] text-on-surface-variant">JOURNALCTL -XE</span>
+</div>
+<div class="p-6 font-mono text-sm space-y-3">
+<div class="flex gap-4 group">
+<span class="text-on-surface-variant shrink-0 w-24">[2022-2024]</span>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold">[SUCCESS]</span>
+<span class="text-on-surface">LEAD_SYS_ARCHITECT @ DATA_NEURAL_CORP</span>
+</div>
+<p class="text-xs text-on-surface-variant ml-4 border-l border-outline-variant pl-4 py-1">
+                            Engineered core data ingestion pipelines handling 5TB/day. Migrated legacy monolith to Rust-based microservices.
+                        </p>
+</div>
+</div>
+<div class="flex gap-4 group">
+<span class="text-on-surface-variant shrink-0 w-24">[2020-2022]</span>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold">[SUCCESS]</span>
+<span class="text-on-surface">SR_FULLSTACK_DEV @ CLOUD_FLARE_INST</span>
+</div>
+<p class="text-xs text-on-surface-variant ml-4 border-l border-outline-variant pl-4 py-1">
+                            Developed edge computing dashboard using React and WebAssembly. Reduced dashboard latency by 45% globally.
+                        </p>
+</div>
+</div>
+<div class="flex gap-4 group">
+<span class="text-on-surface-variant shrink-0 w-24">[2018-2020]</span>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold">[SUCCESS]</span>
+<span class="text-on-surface">JUNIOR_KERNEL_OPS @ LINUX_MAINFRAME</span>
+</div>
+<p class="text-xs text-on-surface-variant ml-4 border-l border-outline-variant pl-4 py-1">
+                            Maintained internal build systems and CI/CD pipelines. Managed high-availability server clusters.
+                        </p>
+</div>
+</div>
+<div class="flex gap-4 group">
+<span class="text-on-surface-variant shrink-0 w-24">[2017-INIT]</span>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="text-secondary font-bold">[INIT]</span>
+<span class="text-on-surface">SYSTEM_INITIALIZATION_SUCCESSFUL</span>
+</div>
+<p class="text-xs text-on-surface-variant ml-4 border-l border-outline-variant pl-4 py-1">
+                            Graduated B.S. in Computer Science with focus on Distributed Systems.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-[#070f14] dark:bg-[#070f14] flex flex-col items-center py-8 w-full border-t-4 border-[#0b1b25] mt-12">
+<div class="font-['Space_Grotesk'] font-mono text-[10px] uppercase tracking-widest text-[#b79a60] mb-4">
+            SYS_REF: FOREST_TERMINAL_2024
+        </div>
+<nav class="flex gap-6">
+<a class="font-['Space_Grotesk'] font-mono text-[10px] uppercase tracking-widest text-[#60798a] hover:text-[#b79a60] transition-colors" href="#">ST_LOGS</a>
+<a class="font-['Space_Grotesk'] font-mono text-[10px] uppercase tracking-widest text-[#b6cf8e] underline" href="#">AUTH_USR</a>
+<a class="font-['Space_Grotesk'] font-mono text-[10px] uppercase tracking-widest text-[#60798a] hover:text-[#b79a60] transition-colors" href="#">ROOT_DIR</a>
+</nav>
+<div class="mt-6 text-[10px] font-mono text-outline-variant">
+            RENDERED_ON: NODE_ALPHA_01 | STATUS: SECURE
+        </div>
+</footer>
+<div class="scanline"></div>
+</body></html>

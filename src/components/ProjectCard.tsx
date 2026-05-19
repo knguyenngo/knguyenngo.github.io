@@ -44,19 +44,17 @@ export default function ProjectCard({ project, index }: { project: Project; inde
       </div>
 
       {/* Header row */}
-      <div className="flex justify-between items-start gap-3 mb-3">
-        <div className="min-w-0">
-          <h3 className={`font-bold text-sm ${v.title}`}>
-            PROJ_{id}: {project.name.toUpperCase()}
-          </h3>
-          <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">
-            {project.description}
-          </p>
-        </div>
+      <div className="flex justify-between items-start gap-3 mb-2">
+        <h3 className={`font-bold text-sm ${v.title}`}>
+          PROJ_{id}: {project.name.toUpperCase()}
+        </h3>
         <span className={`${v.badge} border text-[10px] px-2 py-0.5 shrink-0 uppercase`}>
           STABLE
         </span>
       </div>
+      <p className="text-xs text-on-surface mb-3 leading-relaxed text-center">
+        {project.description}
+      </p>
 
       {/* Tech stack block — styled as terminal code block */}
       <div className={`bg-surface-container-lowest p-3 ${v.accent} text-[11px] text-on-surface-variant`}>
@@ -65,7 +63,7 @@ export default function ProjectCard({ project, index }: { project: Project; inde
           {project.tech.map((t) => (
             <span
               key={t}
-              className="bg-surface-bright border border-outline-variant px-2 py-0.5 text-on-surface text-[10px] uppercase tracking-tight"
+              className="bg-surface-container-highest border border-outline px-2 py-0.5 text-on-surface font-bold text-[10px] uppercase tracking-tight"
             >
               {t}
             </span>
