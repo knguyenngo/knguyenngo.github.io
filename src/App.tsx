@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import LoadingScreen from './components/LoadingScreen';
 import { useScramble } from './hooks/useScramble';
-import borderFrame from './assets/border.png';
+import borderFrame from './assets/border.webp';
+import bgStatic from './assets/bg-static.mp4';
 import './styles/globals.css';
 
 const NAME = 'Khương Nguyễn-Ngô';
@@ -13,10 +14,19 @@ const GALLERY_GIFS = Object.values(
     import: 'default',
   }),
 ) as string[];
-const BROADCAST_GIFS = Array.from(
-  { length: Math.max(1, Math.ceil(24 / GALLERY_GIFS.length)) },
-  () => GALLERY_GIFS,
-).flat();
+
+// Gallery GIFs are encoded at 144x108 with the strip's grayscale/contrast/brightness
+// treatment already baked in, so no per-image CSS filter is needed.
+const GIF_INTRINSIC = { width: 144, height: 108 };
+
+// Mirrors `.broadcast-item` width in base.css. The track only has to be as wide as
+// the viewport for the -50% scroll to loop seamlessly; rendering more items than
+// that is pure decode/compositing cost, which is what hurt on phones.
+const itemWidth = (viewport: number) =>
+  viewport <= 650 ? 58 : Math.min(92, Math.max(72, viewport * 0.06));
+
+const copiesFor = (viewport: number) =>
+  Math.max(1, Math.ceil(viewport / (GALLERY_GIFS.length * itemWidth(viewport))));
 
 export default function App() {
   const { display, scramble } = useScramble(NAME, 700);
@@ -25,6 +35,66 @@ export default function App() {
   const [location, setLocation] = useState('LOCATING···');
   const [loading, setLoading] = useState(true);
   const finishLoading = useCallback(() => setLoading(false), []);
+
+  const [copies, setCopies] = useState(() => copiesFor(window.innerWidth));
+  const [stripLive, setStripLive] = useState(true);
+  const stripRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLVideoElement>(null);
+
+  // The backdrop is a <video>, so the global prefers-reduced-motion rule in CSS
+  // can't reach it — hold it on a single frame instead.
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const apply = () => {
+      const video = bgRef.current;
+      if (!video) return;
+      if (query.matches) video.pause();
+      else void video.play().catch(() => {});
+    };
+    apply();
+    query.addEventListener('change', apply);
+    return () => query.removeEventListener('change', apply);
+  }, []);
+
+  const broadcastGifs = useMemo(() => {
+    const base = Array.from({ length: copies }, () => GALLERY_GIFS).flat();
+    return { base: base.length, items: [...base, ...base] };
+  }, [copies]);
+
+  useEffect(() => {
+    let frame = 0;
+    const onResize = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => setCopies(copiesFor(window.innerWidth)));
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  // Stop the marquee whenever it can't be seen — scrolled away on mobile, or a
+  // backgrounded tab. Both otherwise keep every GIF decoding for nothing.
+  useEffect(() => {
+    const node = stripRef.current;
+    if (!node) return;
+    const onVisibility = () => setStripLive(!document.hidden);
+    document.addEventListener('visibilitychange', onVisibility);
+
+    if (typeof IntersectionObserver === 'undefined') {
+      return () => document.removeEventListener('visibilitychange', onVisibility);
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setStripLive(entry.isIntersecting && !document.hidden),
+      { rootMargin: '120px' },
+    );
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, []);
 
   useEffect(() => {
     scramble();
@@ -76,7 +146,19 @@ export default function App() {
     .toUpperCase();
 
   return (
-    <main className={`portfolio-shell${loading ? '' : ' media-ready'}`}>
+    <main className="portfolio-shell">
+      <video
+        className="page-static"
+        ref={bgRef}
+        src={bgStatic}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+        tabIndex={-1}
+      />
       <header className="site-header">
         <nav aria-label="Contact links">
           <a href="https://github.com/knguyenngo" target="_blank" rel="noreferrer" aria-label="GitHub">
@@ -122,8 +204,23 @@ export default function App() {
 
         <div className="portrait-column">
           <figure className="portrait-frame">
-            <img className="portrait-image" src="/mr_nguyen.jpg" alt="Portrait of Khương Nguyễn-Ngô" />
-            {!loading && <img className="profile-frame-overlay" src={borderFrame} alt="" aria-hidden="true" />}
+            <img
+              className="portrait-image"
+              src="/mr_nguyen.png"
+              alt="Portrait of Khương Nguyễn-Ngô"
+              width={860}
+              height={860}
+              fetchPriority="high"
+            />
+            <img
+              className="profile-frame-overlay"
+              src={borderFrame}
+              alt=""
+              aria-hidden="true"
+              width={224}
+              height={224}
+              decoding="async"
+            />
           </figure>
         </div>
 
@@ -144,14 +241,28 @@ export default function App() {
       </section>
 
       <footer className="site-footer">
-        <div className="broadcast-strip broadcast-strip--footer" aria-label="Animated visual gallery">
+        <div
+          className="broadcast-strip broadcast-strip--footer"
+          aria-label="Animated visual gallery"
+          ref={stripRef}
+        >
           <div
-            className="broadcast-track"
-            style={{ animationDuration: `${BROADCAST_GIFS.length * 1.8}s` }}
+            className={`broadcast-track${stripLive ? '' : ' broadcast-track--idle'}`}
+            style={{ animationDuration: `${broadcastGifs.base * 1.8}s` }}
           >
-            {!loading && [...BROADCAST_GIFS, ...BROADCAST_GIFS].map((source, index) => (
-              <div className="broadcast-item" key={`${source}-${index}`} aria-hidden={index >= BROADCAST_GIFS.length}>
-                <img src={source} alt="" decoding="async" />
+            {broadcastGifs.items.map((source, index) => (
+              <div
+                className="broadcast-item"
+                key={`${source}-${index}`}
+                aria-hidden={index >= broadcastGifs.base}
+              >
+                <img
+                  src={source}
+                  alt=""
+                  {...GIF_INTRINSIC}
+                  decoding="async"
+                  fetchPriority="low"
+                />
               </div>
             ))}
           </div>
