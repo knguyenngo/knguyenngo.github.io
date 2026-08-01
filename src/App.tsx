@@ -76,7 +76,7 @@ export default function App() {
     .toUpperCase();
 
   return (
-    <main className="portfolio-shell">
+    <main className={`portfolio-shell${loading ? '' : ' media-ready'}`}>
       <header className="site-header">
         <nav aria-label="Contact links">
           <a href="https://github.com/knguyenngo" target="_blank" rel="noreferrer" aria-label="GitHub">
@@ -123,7 +123,7 @@ export default function App() {
         <div className="portrait-column">
           <figure className="portrait-frame">
             <img className="portrait-image" src="/mr_nguyen.jpg" alt="Portrait of Khương Nguyễn-Ngô" />
-            <img className="profile-frame-overlay" src={borderFrame} alt="" aria-hidden="true" />
+            {!loading && <img className="profile-frame-overlay" src={borderFrame} alt="" aria-hidden="true" />}
           </figure>
         </div>
 
@@ -149,9 +149,9 @@ export default function App() {
             className="broadcast-track"
             style={{ animationDuration: `${BROADCAST_GIFS.length * 1.8}s` }}
           >
-            {[...BROADCAST_GIFS, ...BROADCAST_GIFS].map((source, index) => (
+            {!loading && [...BROADCAST_GIFS, ...BROADCAST_GIFS].map((source, index) => (
               <div className="broadcast-item" key={`${source}-${index}`} aria-hidden={index >= BROADCAST_GIFS.length}>
-                <img src={source} alt="" />
+                <img src={source} alt="" decoding="async" />
               </div>
             ))}
           </div>

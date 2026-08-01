@@ -10,7 +10,7 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
     if (ending.current) return;
     ending.current = true;
     setLeaving(true);
-    window.setTimeout(onDone, 620);
+    window.setTimeout(onDone, 820);
   };
 
   return (
