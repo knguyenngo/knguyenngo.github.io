@@ -4,7 +4,7 @@ import borderFrame from '../assets/border.png';
 import { useScramble } from '../hooks/useScramble';
 
 export default function HeroCard() {
-  const { display, scramble, reset } = useScramble('Khương Nguyễn');
+  const { display, scramble, reset } = useScramble('Khương Nguyễn-Ngô');
 
   useEffect(() => {
     const id = setTimeout(scramble, 350);
@@ -31,7 +31,7 @@ export default function HeroCard() {
         <div className="relative w-40 h-40 bg-surface-container-lowest shrink-0 mx-auto md:mx-0">
           <img
             src="/headshot.jpg"
-            alt="Khương Nguyễn"
+            alt="Khương Nguyễn-Ngô"
             className="w-full h-full object-cover avatar-filter"
           />
           <div

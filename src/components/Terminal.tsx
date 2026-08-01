@@ -70,7 +70,7 @@ function runCommand(raw: string): Line[] {
   if (cmd === 'whoami') {
     return [
       { type: 'output', text: '' },
-      { type: 'output', text: '  Khương Nguyễn (knguyenngo)' },
+      { type: 'output', text: '  Khương Nguyễn-Ngô (knguyenngo)' },
       { type: 'output', text: '  Full Stack Software Developer' },
       { type: 'output', text: '  Interests: NLP · ML · Data Systems' },
       { type: 'output', text: '  Location: Richmond, VA' },
