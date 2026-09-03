@@ -409,9 +409,9 @@ a { text-decoration: none; }
   .footer-meta {
     min-height: 30px;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 5px;
-    text-align: right;
+    text-align: center;
   }
   .footer-meta p {
     min-width: 0;
