@@ -1,99 +1,22 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Github, Linkedin, Mail } from 'lucide-react';
-import LoadingScreen from './components/LoadingScreen';
+import { ThinkingOrb } from 'thinking-orbs';
 import { useScramble } from './hooks/useScramble';
 import borderFrame from './assets/border.webp';
-import bgStatic from './assets/bg-static.mp4';
 import './styles/globals.css';
 
 const NAME = 'Khương Nguyễn-Ngô';
-const GALLERY_GIFS = Object.values(
-  import.meta.glob('/src/assets/gallery/*.gif', {
-    eager: true,
-    query: '?url',
-    import: 'default',
-  }),
-) as string[];
-
-// Gallery GIFs are encoded at 144x108 with the strip's grayscale/contrast/brightness
-// treatment already baked in, so no per-image CSS filter is needed.
-const GIF_INTRINSIC = { width: 144, height: 108 };
-
-// Mirrors `.broadcast-item` width in base.css. The track only has to be as wide as
-// the viewport for the -50% scroll to loop seamlessly; rendering more items than
-// that is pure decode/compositing cost, which is what hurt on phones.
-const itemWidth = (viewport: number) =>
-  viewport <= 650 ? 58 : Math.min(92, Math.max(72, viewport * 0.06));
-
-const copiesFor = (viewport: number) =>
-  Math.max(1, Math.ceil(viewport / (GALLERY_GIFS.length * itemWidth(viewport))));
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
   const { display, scramble } = useScramble(NAME, 700);
   const [time, setTime] = useState(new Date());
   const [ip, setIp] = useState('···');
   const [location, setLocation] = useState('LOCATING···');
-  const [loading, setLoading] = useState(true);
-  const finishLoading = useCallback(() => setLoading(false), []);
-
-  const [copies, setCopies] = useState(() => copiesFor(window.innerWidth));
-  const [stripLive, setStripLive] = useState(true);
-  const stripRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLVideoElement>(null);
-
-  // The backdrop is a <video>, so the global prefers-reduced-motion rule in CSS
-  // can't reach it — hold it on a single frame instead.
-  useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const apply = () => {
-      const video = bgRef.current;
-      if (!video) return;
-      if (query.matches) video.pause();
-      else void video.play().catch(() => {});
-    };
-    apply();
-    query.addEventListener('change', apply);
-    return () => query.removeEventListener('change', apply);
-  }, []);
-
-  const broadcastGifs = useMemo(() => {
-    const base = Array.from({ length: copies }, () => GALLERY_GIFS).flat();
-    return { base: base.length, items: [...base, ...base] };
-  }, [copies]);
 
   useEffect(() => {
-    let frame = 0;
-    const onResize = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => setCopies(copiesFor(window.innerWidth)));
-    };
-    window.addEventListener('resize', onResize);
-    return () => {
-      window.removeEventListener('resize', onResize);
-      window.cancelAnimationFrame(frame);
-    };
-  }, []);
-
-  // Stop the marquee whenever it can't be seen — scrolled away on mobile, or a
-  // backgrounded tab. Both otherwise keep every GIF decoding for nothing.
-  useEffect(() => {
-    const node = stripRef.current;
-    if (!node) return;
-    const onVisibility = () => setStripLive(!document.hidden);
-    document.addEventListener('visibilitychange', onVisibility);
-
-    if (typeof IntersectionObserver === 'undefined') {
-      return () => document.removeEventListener('visibilitychange', onVisibility);
-    }
-    const observer = new IntersectionObserver(
-      ([entry]) => setStripLive(entry.isIntersecting && !document.hidden),
-      { rootMargin: '120px' },
-    );
-    observer.observe(node);
-    return () => {
-      observer.disconnect();
-      document.removeEventListener('visibilitychange', onVisibility);
-    };
+    const timer = window.setTimeout(() => setLoading(false), 1100);
+    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -147,17 +70,11 @@ export default function App() {
 
   return (
     <main className="portfolio-shell">
-      <video
+      <img
         className="page-static"
-        ref={bgRef}
-        src={bgStatic}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
+        src="/icegif-285-426582966.gif"
+        alt=""
         aria-hidden="true"
-        tabIndex={-1}
       />
       <header className="site-header">
         <nav aria-label="Contact links">
@@ -241,47 +158,24 @@ export default function App() {
       </section>
 
       <footer className="site-footer">
-        <div
-          className="broadcast-strip broadcast-strip--footer"
-          aria-label="Animated visual gallery"
-          ref={stripRef}
-        >
-          <div
-            className={`broadcast-track${stripLive ? '' : ' broadcast-track--idle'}`}
-            style={{ animationDuration: `${broadcastGifs.base * 1.8}s` }}
-          >
-            {broadcastGifs.items.map((source, index) => (
-              <div
-                className="broadcast-item"
-                key={`${source}-${index}`}
-                aria-hidden={index >= broadcastGifs.base}
-              >
-                <img
-                  src={source}
-                  alt=""
-                  {...GIF_INTRINSIC}
-                  decoding="async"
-                  fetchPriority="low"
-                />
-              </div>
-            ))}
-          </div>
-          <div className="broadcast-meta">
-            <p>
-              <span className="footer-label">IP</span> {ip}
-              <span className="footer-separator">·</span>
-              <span>{location}</span>
-            </p>
-            <time dateTime={time.toISOString()}>
-              <span className="desktop-time">{dateTime}</span>
-              <span className="mobile-time">
-                {time.toLocaleTimeString('en-US', { hour12: false })}
-              </span>
-            </time>
-          </div>
+        <div className="footer-meta">
+          <p>
+            <span className="footer-label">IP</span> {ip}
+            <span className="footer-separator">·</span>
+            <span>{location}</span>
+          </p>
+          <span className="mobile-meta-separator" aria-hidden="true">·</span>
+          <time dateTime={time.toISOString()}>{dateTime}</time>
         </div>
       </footer>
-      {loading && <LoadingScreen onDone={finishLoading} />}
+      {loading && (
+        <div className="loading-screen">
+          <div className="loading-status" role="status" aria-label="Loading portfolio">
+            <ThinkingOrb state="solving" size={64} theme="dark" aria-hidden="true" />
+            <span>FREE GAZA</span>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
