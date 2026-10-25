@@ -144,15 +144,26 @@ export default function App() {
         <div className="side-column side-column--right">
           <div className="intro">
             <h1>I make stuff.</h1>
-            <a
-              className="work-link"
-              href="https://virginmedtransportation.com/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span>2026</span>
-              <span>VMT Site ↗</span>
-            </a>
+            <div className="work-list">
+              <a
+                className="work-link"
+                href="https://virginmedtransportation.com/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span>2026</span>
+                <span>VMT Site ↗</span>
+              </a>
+              <a
+                className="work-link"
+                href="https://www.benchsurgical.com/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span>2026</span>
+                <span>Bench Surgical ↗</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>
