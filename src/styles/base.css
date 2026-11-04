@@ -1,8 +1,20 @@
 *, *::before, *::after { box-sizing: border-box; }
 
+/* Zoom-proof sizing: 1rem is a fixed share of the window, so browser zoom (which changes CSS px but not
+   the window) leaves the layout untouched. It is exactly 16px at the 1786×1024 and 390×844 design windows;
+   min() keeps the whole composition inside narrower or shorter windows by scaling it down instead. */
+html { font-size: min(calc(100vh / 64), calc(100vw / 111.625)); }
+@media (orientation: portrait) {
+  html { font-size: min(calc(100vw / 24.375), calc(100vh / 52.75)); }
+}
+
 :root {
-  font-family: 'DM Mono', 'Courier New', monospace;
-  color: #fff;
+  font-family: 'Excon', system-ui, sans-serif;
+  font-weight: 300;
+  /* Two text colours site-wide: primary for anything you read, secondary for labels. */
+  --text: #f1ede5;
+  --text-muted: #a6a6a6;
+  color: var(--text);
   background: #000;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -11,7 +23,7 @@
 
 html { scroll-behavior: smooth; }
 
-body { margin: 0; min-width: 320px; min-height: 100vh; }
+body { margin: 0; min-width: 20rem; min-height: 100vh; }
 button, a { color: inherit; font: inherit; }
 button { border: 0; background: none; padding: 0; }
 a { text-decoration: none; }
@@ -22,43 +34,81 @@ a { text-decoration: none; }
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  padding: clamp(22px, 3vw, 46px) clamp(24px, 5vw, 88px);
+  padding: clamp(1.375rem, 3vw, 2.875rem) clamp(1.5rem, 5vw, 5.5rem);
   overflow: hidden;
   position: relative;
   isolation: isolate;
 }
 
-.page-static {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.08);
-  pointer-events: none;
-}
-
+/* Screen texture over the whole design: an LED dot matrix.
+   One static fixed layer, so it is composited once and never repaints. */
 .portfolio-shell::after {
   content: '';
   position: fixed;
   inset: 0;
-  z-index: -1;
-  background: rgba(0, 0, 0, .75);
+  z-index: 40;
   pointer-events: none;
+  background: radial-gradient(circle, transparent 0 0.0625rem, rgba(0, 0, 0, .34) 0.0938rem) 0 0 / 0.25rem 0.25rem;
+}
+/* Copy sits above the screen texture so small text stays crisp; only the artwork gets the LED look. */
+.site-header, .site-footer, .identity, .intro, .work-panel { position: relative; z-index: 41; }
+.signal-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(ellipse 80% 70% at 58% 42%, #161616 0%, #080808 62%, #020202 100%);
+}
+.signal-layer,
+.signal-grain {
+  position: absolute;
+  inset: -2.5rem;
+  width: calc(100% + 5rem);
+  height: calc(100% + 5rem);
+  will-change: transform;
+}
+.signal-layer--web { animation: meshDrift 26s ease-in-out -8s infinite alternate; }
+.signal-layer--accents { animation: accentDrift 19s ease-in-out -5s infinite alternate; }
+.signal-grain {
+  inset: -8rem;
+  width: calc(100% + 16rem);
+  height: calc(100% + 16rem);
+  background: url('../assets/grain.png') 0 0 / 8rem 8rem;
+  opacity: .55;
+  animation: signalGrain .9s steps(1, end) infinite;
+}
+
+/* Visible but calm: the mesh travels about 64×44px each way, the accents about 40×28px the other way. */
+@keyframes meshDrift {
+  from { transform: translate3d(-2rem, 1.25rem, 0); }
+  to { transform: translate3d(2rem, -1.5rem, 0); }
+}
+@keyframes accentDrift {
+  from { transform: translate3d(1.25rem, -0.875rem, 0); }
+  to { transform: translate3d(-1.25rem, 0.875rem, 0); }
+}
+@keyframes signalGrain {
+  0% { transform: translate3d(0, 0, 0); }
+  17% { transform: translate3d(-2.3125rem, 1.3125rem, 0); }
+  33% { transform: translate3d(1.8125rem, -2.875rem, 0); }
+  50% { transform: translate3d(-3.625rem, -0.8125rem, 0); }
+  67% { transform: translate3d(2.75rem, 3.25rem, 0); }
+  83% { transform: translate3d(-0.6875rem, -3.8125rem, 0); }
 }
 
 .site-header, .site-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 11px;
-  letter-spacing: .02em;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: .04em;
 }
 
 .site-header { justify-content: flex-end; }
-.site-header nav { display: flex; gap: clamp(18px, 2.2vw, 38px); }
-.site-header nav svg { display: block; width: 18px; height: 18px; stroke-width: 1.5; }
+.site-header nav { display: flex; gap: clamp(1.125rem, 2.2vw, 2.375rem); }
+.site-header nav svg { display: block; width: 1.125rem; height: 1.125rem; stroke-width: 1.5; }
 .discord-link svg { fill: none; stroke: currentColor; }
 .discord-link svg path { fill: currentColor; stroke: none; }
 .site-header nav a, .site-footer a { position: relative; }
@@ -67,8 +117,8 @@ a { text-decoration: none; }
   position: absolute;
   left: 0;
   right: 100%;
-  bottom: -4px;
-  height: 1px;
+  bottom: -0.25rem;
+  height: 0.0625rem;
   background: currentColor;
   transition: right 220ms ease;
 }
@@ -77,25 +127,27 @@ a { text-decoration: none; }
 .portrait-stage {
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 430px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 26.875rem) minmax(0, 1fr);
   place-items: center;
-  gap: clamp(40px, 7vw, 132px);
+  gap: clamp(2.5rem, 7vw, 8.25rem);
   flex: 1;
   min-height: 0;
-  padding-block: clamp(24px, 5vh, 64px);
+  padding-block: clamp(1.5rem, 5vh, 4rem);
 }
 
-.identity { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; }
+.identity { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.625rem; text-align: center; }
+/* Type scale (rem, so it rides the zoom-proof root): display 2rem, lead 1.5rem, labels 0.75rem at weight 400. */
+.identity-name { margin: 0; font: inherit; }
 .identity button {
-  font-size: clamp(18px, 1.55vw, 28px);
-  letter-spacing: .055em;
+  font-size: 2rem;
+  letter-spacing: .01em;
   white-space: pre;
   cursor: pointer;
 }
 .name-signal {
   position: relative;
-  color: #f1ede5;
-  text-shadow: 0 0 10px rgba(240,235,220,.08);
+  color: var(--text);
+  text-shadow: 0 0 0.625rem rgba(0,0,0,.95), 0 0 0.1875rem rgba(0,0,0,.9);
 }
 .name-signal::before,
 .name-signal::after {
@@ -106,30 +158,30 @@ a { text-decoration: none; }
   opacity: 0;
 }
 .name-signal::before {
-  color: rgba(145,190,220,.72);
-  text-shadow: 2px 0 rgba(145,190,220,.22);
+  color: rgba(255,255,255,.7);
+  text-shadow: 0.125rem 0 rgba(255,255,255,.2);
   animation: nameSignalTop 4.6s steps(1, end) infinite;
 }
 .name-signal::after {
-  color: rgba(230,150,125,.58);
-  text-shadow: -2px 0 rgba(230,150,125,.18);
+  color: rgba(150,150,150,.7);
+  text-shadow: -0.125rem 0 rgba(150,150,150,.22);
   animation: nameSignalBottom 4.6s steps(1, end) infinite;
 }
 
 @keyframes nameSignalTop {
   0%, 8%, 10%, 43%, 45%, 78%, 80%, 100% { opacity: 0; transform: translate(0); clip-path: inset(0); }
-  9% { opacity: .8; transform: translate(2px, -1px); clip-path: inset(8% 0 58% 0); }
-  44% { opacity: .55; transform: translate(-2px, 0); clip-path: inset(38% 0 35% 0); }
-  79% { opacity: .7; transform: translate(1px, 1px); clip-path: inset(69% 0 8% 0); }
+  9% { opacity: .8; transform: translate(0.125rem, -0.0625rem); clip-path: inset(8% 0 58% 0); }
+  44% { opacity: .55; transform: translate(-0.125rem, 0); clip-path: inset(38% 0 35% 0); }
+  79% { opacity: .7; transform: translate(0.0625rem, 0.0625rem); clip-path: inset(69% 0 8% 0); }
 }
 
 @keyframes nameSignalBottom {
   0%, 8%, 10%, 43%, 45%, 78%, 80%, 100% { opacity: 0; transform: translate(0); clip-path: inset(0); }
-  9% { opacity: .62; transform: translate(-2px, 1px); clip-path: inset(57% 0 18% 0); }
-  44% { opacity: .48; transform: translate(2px, 1px); clip-path: inset(14% 0 64% 0); }
-  79% { opacity: .58; transform: translate(-1px, 0); clip-path: inset(46% 0 31% 0); }
+  9% { opacity: .62; transform: translate(-0.125rem, 0.0625rem); clip-path: inset(57% 0 18% 0); }
+  44% { opacity: .48; transform: translate(0.125rem, 0.0625rem); clip-path: inset(14% 0 64% 0); }
+  79% { opacity: .58; transform: translate(-0.0625rem, 0); clip-path: inset(46% 0 31% 0); }
 }
-.identity span { color: #777; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+.identity span { color: var(--text-muted); font-size: 0.75rem; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; }
 
 .side-column {
   width: 100%;
@@ -137,28 +189,29 @@ a { text-decoration: none; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(34px, 5vw, 70px);
+  gap: clamp(2.125rem, 5vw, 4.375rem);
   text-align: center;
 }
 .portrait-column {
-  width: min(100%, calc(100svh - 360px));
-  max-width: 430px;
+  width: min(100%, calc(100svh - 22.5rem));
+  max-width: 26.875rem;
   max-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(8px, 1.2vh, 14px);
+  gap: clamp(0.5rem, 1.2vh, 0.875rem);
 }
 .portrait-frame {
   position: relative;
   aspect-ratio: 1 / 1;
-  border: 1px solid #333;
-  border-radius: 7px;
-  padding: 12px;
+  border: 0.0625rem solid #333;
+  border-radius: 0.4375rem;
+  --frame-pad: 0.75rem;
+  padding: var(--frame-pad);
   background: #000;
   overflow: visible;
   isolation: isolate;
-  box-shadow: 0 0 22px rgba(255,255,255,.04);
+  box-shadow: 0 0 1.375rem rgba(255,255,255,.06);
   width: 100%;
   flex: 0 1 auto;
 }
@@ -167,7 +220,7 @@ a { text-decoration: none; }
   position: absolute;
   inset: 0;
   z-index: 2;
-  padding: 2px;
+  padding: 0.125rem;
   border-radius: inherit;
   background: conic-gradient(
     from var(--frame-angle),
@@ -189,7 +242,7 @@ a { text-decoration: none; }
 .portrait-frame::after {
   content: '';
   position: absolute;
-  inset: 12px;
+  inset: 0.75rem;
   z-index: 1;
   pointer-events: none;
   background:
@@ -210,17 +263,17 @@ a { text-decoration: none; }
     repeating-linear-gradient(
       to bottom,
       rgba(255,255,255,.09) 0,
-      rgba(255,255,255,.09) 1px,
-      rgba(0,0,0,.3) 1px,
-      rgba(0,0,0,.3) 3px
+      rgba(255,255,255,.09) 0.0625rem,
+      rgba(0,0,0,.3) 0.0625rem,
+      rgba(0,0,0,.3) 0.1875rem
     ),
     repeating-linear-gradient(
       92deg,
-      transparent 0 3px,
-      rgba(255,255,255,.035) 4px,
-      transparent 5px 9px
+      transparent 0 0.1875rem,
+      rgba(255,255,255,.035) 0.25rem,
+      transparent 0.3125rem 0.5625rem
     );
-  background-size: 100% 100%, 100% 235%, 100% 3px, 11px 100%;
+  background-size: 100% 100%, 100% 235%, 100% 0.1875rem, 0.6875rem 100%;
   mix-blend-mode: screen;
   opacity: .78;
   animation: vhsTracking 3.1s steps(1, end) infinite;
@@ -230,20 +283,22 @@ a { text-decoration: none; }
   height: 100%;
   display: block;
   object-fit: cover;
-  filter: grayscale(1) contrast(1.48) brightness(.68) saturate(0);
   animation: vhsFlicker 4.2s steps(1, end) infinite;
 }
+/* Fit the frame to the picture: the bracket strokes sit 5/224 in from the frame image's edge,
+   so scale it to (picture × 224/214) and pull it out by that margin. The picture is the frame's
+   content box, --frame-pad inside the padding box. Retune these numbers if the frame image changes. */
 .profile-frame-overlay {
   position: absolute;
-  inset: -12.5%;
+  top: calc(var(--frame-pad) - (100% - 2 * var(--frame-pad)) * 5 / 214);
+  left: calc(var(--frame-pad) - (100% - 2 * var(--frame-pad)) * 5 / 214);
   z-index: 3;
-  width: 125%;
-  height: 125%;
+  width: calc((100% - 2 * var(--frame-pad)) * 224 / 214);
+  height: calc((100% - 2 * var(--frame-pad)) * 224 / 214);
   max-width: none;
   display: block;
   object-fit: fill;
   pointer-events: none;
-  filter: grayscale(1) contrast(1.35) brightness(1.15);
 }
 .portrait-frame { margin: 0; }
 
@@ -259,53 +314,94 @@ a { text-decoration: none; }
 
 @keyframes vhsTracking {
   0%, 8%, 12%, 32%, 36%, 72%, 100% { background-position: 0 0, 0 -70%, 0 0, 0 0; opacity: .72; }
-  9% { background-position: 0 0, 0 15%, 0 1px, 4px 0; opacity: .92; transform: translateX(-1px); }
-  10% { background-position: 0 0, 0 62%, 0 2px, -3px 0; opacity: .58; transform: translateX(2px); }
-  33% { background-position: 0 0, 0 30%, 0 1px, 2px 0; opacity: .84; }
-  34% { background-position: 0 0, 0 84%, 0 0, -2px 0; opacity: .64; transform: translateX(-2px); }
-  73% { background-position: 0 0, 0 52%, 0 2px, 3px 0; opacity: .86; }
+  9% { background-position: 0 0, 0 15%, 0 0.0625rem, 0.25rem 0; opacity: .92; transform: translateX(-0.0625rem); }
+  10% { background-position: 0 0, 0 62%, 0 0.125rem, -0.1875rem 0; opacity: .58; transform: translateX(0.125rem); }
+  33% { background-position: 0 0, 0 30%, 0 0.0625rem, 0.125rem 0; opacity: .84; }
+  34% { background-position: 0 0, 0 84%, 0 0, -0.125rem 0; opacity: .64; transform: translateX(-0.125rem); }
+  73% { background-position: 0 0, 0 52%, 0 0.125rem, 0.1875rem 0; opacity: .86; }
 }
 
 @keyframes vhsFlicker {
-  0%, 11%, 14%, 48%, 51%, 79%, 100% { filter: grayscale(1) contrast(1.48) brightness(.68); transform: translateX(0); }
-  12% { filter: grayscale(1) contrast(1.62) brightness(.59); transform: translateX(-2px) skewX(-.25deg); }
-  13% { filter: grayscale(1) contrast(1.34) brightness(.74); transform: translateX(1px); }
-  49% { filter: grayscale(1) contrast(1.58) brightness(.62); }
-  80% { filter: grayscale(1) contrast(1.38) brightness(.72); transform: translateX(1px); }
+  0%, 11%, 14%, 48%, 51%, 79%, 100% { opacity: 1; transform: translateX(0); }
+  12% { opacity: .82; transform: translateX(-0.125rem) skewX(-.25deg); }
+  13% { opacity: .94; transform: translateX(0.0625rem); }
+  49% { opacity: .86; }
+  80% { opacity: .92; transform: translateX(0.0625rem); }
 }
 
-.intro { width: 100%; max-width: 470px; justify-self: center; text-align: center; }
-.intro h1 { margin: 0 0 30px; font-size: clamp(17px, 1.55vw, 28px); line-height: 1.3; font-weight: 400; }
-.work-list { display: grid; gap: 14px; }
-.work-link { display: flex; align-items: baseline; justify-content: center; gap: 17px; width: 100%; }
-.work-link span:first-child { color: #777; font-size: clamp(15px, 1.45vw, 26px); font-weight: 300; }
-.work-link span:last-child { font-size: clamp(17px, 1.55vw, 28px); position: relative; }
-.work-link span:last-child::after {
+.intro { width: 100%; max-width: 29.375rem; justify-self: center; text-align: center; }
+/* A dark halo keeps text readable where crystals pass behind it. Static, so it costs nothing per frame. */
+.identity span, .intro { text-shadow: 0 0 0.625rem rgba(0,0,0,.95), 0 0 0.1875rem rgba(0,0,0,.9); }
+.site-header svg { filter: drop-shadow(0 0 0.25rem rgba(0,0,0,.95)); }
+.intro-trigger { display: inline-flex; align-items: baseline; gap: 0.5rem; font-size: 2rem; line-height: 1.2; }
+/* Both arrows (→ here, ← in the work view) share one treatment: muted at rest, then they brighten and slide
+   0.375rem the way they point. */
+.intro-trigger span, .work-back { display: inline-block; color: var(--text-muted); transition: transform 220ms ease, color 220ms ease; }
+.intro-trigger:hover span, .intro-trigger:focus-visible span { color: var(--text); transform: translateX(0.375rem); }
+.work-back:hover, .work-back:focus-visible { color: var(--text); transform: translateX(-0.375rem); }
+
+/* Work view: the home copy fades away and one list takes the stage, like a single line on an empty page. The
+   background, header and footer stay. Opacity and visibility only, so nothing repaints the mesh. */
+.portrait-stage { transition: opacity 360ms ease, visibility 0s linear 0s; }
+.is-work .portrait-stage { opacity: 0; visibility: hidden; transition: opacity 360ms ease, visibility 0s linear 360ms; }
+.work-panel {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 360ms ease, visibility 0s linear 360ms;
+  text-shadow: 0 0 0.625rem rgba(0,0,0,.95), 0 0 0.1875rem rgba(0,0,0,.9);
+}
+.is-work .work-panel { opacity: 1; visibility: visible; transition: opacity 360ms ease 160ms, visibility 0s linear 0s; }
+.work-panel > * { pointer-events: auto; }
+.work-back { font-size: 2rem; line-height: 1; }
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  outline: none;
+}
+.work-list { margin: 0; padding: 0; list-style: none; display: grid; justify-items: center; gap: 0.75rem; text-align: center; }
+.work-link { display: inline-block; }
+.work-title { font-size: 2rem; line-height: 1.2; position: relative; }
+.work-title::after {
   content: '';
   position: absolute;
   left: 0;
   right: 100%;
-  bottom: -5px;
-  height: 1px;
+  bottom: -0.25rem;
+  height: 0.0625rem;
   background: currentColor;
   transition: right 220ms ease;
 }
-.work-link:hover span:last-child::after { right: 0; }
+.work-link:hover .work-title::after, .work-link:focus-visible .work-title::after { right: 0; }
 
-.site-footer { width: 100%; align-items: flex-end; color: #fff; text-shadow: 0 1px 3px #000; }
+.site-footer { width: 100%; align-items: flex-end; color: var(--text); text-shadow: 0 0 0.5rem rgba(0,0,0,.95), 0 0.0625rem 0.1875rem #000; }
+/* Live data (IP, location, clock) is set in a mono so it reads as a readout and the ticking digits stay put. */
+.site-footer { font-family: 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: 0; }
 .footer-meta { width: 100%; display: flex; align-items: center; justify-content: space-between; }
 .site-footer p { margin: 0; }
 .site-footer time { font-variant-numeric: tabular-nums; }
 .mobile-meta-separator { display: none; }
-.footer-label { margin-right: 6px; }
-.footer-separator { margin-inline: 10px; }
+.footer-label { margin-right: 0.375rem; }
+.footer-separator { margin-inline: 0.625rem; }
 
-@media (min-width: 981px) {
-  .portrait-stage { transform: translateY(-5px); }
+@media (orientation: landscape) {
+  /* A margin, not a transform: a transform would trap the copy below the screen texture. */
+  .portrait-stage { margin-top: -0.3125rem; }
   .site-footer {
     position: relative;
-    height: 11px;
-    flex: 0 0 11px;
+    height: 0.6875rem;
+    flex: 0 0 0.6875rem;
   }
 }
 
@@ -319,21 +415,20 @@ a { text-decoration: none; }
   animation: loaderExit 450ms ease 650ms forwards;
 }
 
+/* Compact pill around the 20px orb preset (the inline-text size), like an agent status chip. */
 .loading-status {
-  width: 232px;
-  height: 88px;
-  padding: 11px 24px 11px 14px;
+  padding: 0.75rem 1.25rem 0.75rem 1rem;
   display: flex;
   align-items: center;
-  gap: 14px;
-  border: 1px solid #353535;
-  border-radius: 999px;
+  gap: 0.625rem;
+  border: 0.0625rem solid #353535;
+  border-radius: 62.4375rem;
   background: #1d1d1d;
   color: #e7e7e7;
 }
 
 .loading-status span {
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 300;
   white-space: nowrap;
 }
@@ -342,104 +437,72 @@ a { text-decoration: none; }
   to { opacity: 0; visibility: hidden; }
 }
 
-@media (max-width: 980px) {
-  .portfolio-shell { height: auto; overflow: visible; }
-  .portrait-stage { grid-template-columns: 1fr minmax(260px, 1.2fr); gap: 32px; padding-block: 70px; }
-  .side-column--left { grid-column: 1 / -1; }
-  .portrait-column { grid-column: 1; width: 100%; max-width: 430px; }
-  .intro { align-self: center; }
-}
-
-@media (max-width: 650px) {
+@media (orientation: portrait) {
   .portfolio-shell {
     height: auto;
     min-height: 100svh;
-    padding: 20px max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+    padding: 1.25rem max(1.125rem, env(safe-area-inset-right)) max(1.125rem, env(safe-area-inset-bottom)) max(1.125rem, env(safe-area-inset-left));
     overflow: visible;
   }
   .site-header { justify-content: center; }
-  .site-header nav { width: 100%; justify-content: center; gap: 10px; }
+  .site-header nav { width: 100%; justify-content: center; gap: 0.625rem; }
   .site-header nav a {
     display: grid;
     place-items: center;
-    width: 38px;
-    height: 38px;
+    width: 2.375rem;
+    height: 2.375rem;
   }
-  .site-header nav svg { width: 17px; height: 17px; }
+  .site-header nav svg { width: 1.0625rem; height: 1.0625rem; }
   .portrait-stage {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 24px;
-    padding-block: 30px 34px;
+    gap: 1.5rem;
+    padding-block: 1.875rem 2.125rem;
     min-height: auto;
   }
-  .side-column { gap: 20px; }
+  .side-column { gap: 1.25rem; }
   .side-column--left { order: 0; }
-  .identity { gap: 7px; }
-  .identity button { font-size: clamp(19px, 6vw, 24px); }
-  .identity span { font-size: 9px; }
+  .identity { gap: 0.4375rem; }
+  .identity button { font-size: 1.75rem; }
   .portrait-column {
     order: 1;
-    width: min(68vw, 260px);
-    gap: 12px;
+    width: min(68vw, 16.25rem);
+    gap: 0.75rem;
   }
   .portrait-frame {
-    width: min(68vw, 260px);
-    padding: 9px;
-    border-radius: 5px;
+    width: min(68vw, 16.25rem);
+    --frame-pad: 0.5625rem;
+    border-radius: 0.3125rem;
   }
-  .portrait-frame::after { inset: 9px; }
+  .portrait-frame::after { inset: 0.5625rem; }
   .side-column--right { order: 2; }
-  .intro { max-width: 300px; }
-  .intro h1 { margin-bottom: 16px; font-size: 18px; }
-  .work-list { gap: 10px; }
-  .work-link { width: min(100%, 230px); margin-inline: auto; justify-content: center; gap: 18px; }
-  .work-link span:first-child,
-  .work-link span:last-child { font-size: 15px; }
+  .intro { max-width: 18.75rem; }
+  .intro-trigger, .work-title, .work-back { font-size: 1.75rem; }
   .site-footer {
     align-items: center;
     justify-content: center;
     width: 100%;
-    font-size: 8px;
+    font-size: 0.75rem;
     line-height: 1.5;
     text-align: center;
   }
   .site-footer p { max-width: 100%; overflow-wrap: anywhere; }
-  .footer-separator { margin-inline: 7px; }
+  .footer-separator { margin-inline: 0.4375rem; }
+  /* Two centred lines on a phone, date first, so the labels keep the 12px size without cutting anything off. */
   .footer-meta {
-    min-height: 30px;
+    flex-direction: column-reverse;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 0.25rem;
     text-align: center;
   }
-  .footer-meta p {
-    min-width: 0;
-    max-width: none;
-    flex: 0 1 auto;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .footer-meta time { flex: 0 0 auto; max-width: none; text-align: right; white-space: nowrap; }
-  .mobile-meta-separator { display: inline; }
-  .footer-label { margin-right: 4px; }
-  .footer-separator { margin-inline: 5px; }
-  .site-footer { padding-top: 12px; }
-}
-
-@media (max-width: 380px) {
-  .portrait-stage { gap: 20px; padding-block: 22px 26px; }
-  .portrait-column, .portrait-frame { width: min(66vw, 235px); }
-  .site-header nav a { width: 34px; height: 34px; }
-}
-
-@media (max-width: 650px) and (max-height: 700px) {
-  .portrait-stage { gap: 17px; padding-block: 16px 20px; }
-  .portrait-column, .portrait-frame { width: min(60vw, 225px); }
-  .intro h1 { margin-bottom: 11px; }
+  .footer-meta p { white-space: nowrap; }
+  .footer-meta time { white-space: nowrap; }
+  .footer-label { margin-right: 0.25rem; }
+  .footer-separator { margin-inline: 0.3125rem; }
+  .site-footer { padding-top: 0.75rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

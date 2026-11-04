@@ -8,6 +8,8 @@ Minimal personal portfolio for Khương Nguyễn-Ngô, deployed to GitHub Pages 
 - Vite 7
 - Plain CSS
 - Lucide React icons
+- Excon (Fontshare), weights 300 and 400; IBM Plex Mono 400 (Google Fonts) for the footer data
+- `thinking-orbs` for the loading-screen orb
 - `gh-pages` deployment
 
 ## Commands
@@ -25,11 +27,10 @@ npm run deploy
 ```text
 src/
 ├── assets/
-│   ├── gallery/       # GIFs automatically included in the footer filmstrip
-│   ├── bg-static.mp4  # Animated analog-static page background
-│   └── border.webp    # Animated portrait overlay frame (30 frames)
+│   ├── border-stars.webp  # Animated portrait frame (56 frames), corners fitted to the photo
+│   └── grain.png          # 128px noise tile over the background
 ├── components/
-│   └── LoadingScreen.tsx
+│   └── SignalBackground.tsx  # Generated SVG background: mesh layer + accent layer (reticles, stars)
 ├── hooks/
 │   └── useScramble.ts
 ├── styles/
@@ -38,56 +39,51 @@ src/
 ├── App.tsx
 └── main.tsx
 public/
-├── gojo-loader.mp4
-└── mr_nguyen.png
+└── profilepic.webp   # 400×400 colour-overlay cat portrait (source: design/source/pfp-color-overlay.png)
+design/               # Local only, not committed or shipped: design rounds, references, locked copies, archived assets
 ```
 
-## Assets
+`src/assets/` still holds old tracked files (`bg-static.mp4`, `border.webp`, `gallery/`, `extra_borders/`)
+that nothing imports, so Vite does not ship them. Anything in `public/` always ships, so keep it to what
+the page uses.
 
-Total payload is ~1.3 MB and should stay there. Assets are pre-processed so the
-browser does as little per-frame work as possible:
+## Design
 
-- **Gallery GIFs** are 144x108, ≤12fps, grayscale, with the strip's old CSS filter
-  (`grayscale(1) contrast(1.15) brightness(.56)`) **baked into the pixels**. That is why
-  `.broadcast-item img` has no filter. Re-encode new GIFs the same way, otherwise they
-  will look washed out next to the others:
+The locked design and every rejected round are in `design/canvas/2026-11-03-purple/index.html`, with the
+locked component and stylesheet saved as `*.LOCKED-2026-11-03.*.txt`. Check the "Rejected, do not bring
+back" notes there before proposing a look.
 
-  ```bash
-  ffmpeg -i in.gif -vf "crop='min(iw,ih*4/3)':'min(ih,iw*3/4)',scale=144:108:flags=lanczos,fps=12,\
-  format=gray,lutyuv=y='clip(0.644*val-10.71,0,255)',split[s0][s1];\
-  [s0]palettegen=max_colors=48:stats_mode=diff[p];[s1][p]paletteuse=dither=bayer:bayer_scale=4" \
-    -loop 0 src/assets/gallery/out.gif
-  ```
+- **Background (`SignalBackground.tsx`):** a low-poly mesh lifted by a ridged, faceted height map. The mesh
+  lines are an SVG mask over static colour fields (vintage lavender `#A167A5` base, lavender veil `#E8D7F1`
+  centre, thistle `#D3BCCC` lower left, indigo velvet `#4A306D` right), with a blurred copy for glow. Small
+  target reticles and a sparse scatter of mixed-style stars sit on a second SVG layer that drifts against the
+  mesh, kept out of `COPY_ZONES`, which are measured from the rendered page at both design windows. Re-measure
+  them if the layout moves. Everything is generated once at load; layers drift with `transform` only, so
+  nothing repaints per frame. Keep it that way. The ruby/grey/snow version is saved in the canvas as
+  `SignalBackground.r70.tsx.txt`.
+- **Colours:** two text colours, `--text` and `--text-muted` on `:root`.
+- **Type:** two sizes. Display `2rem` (1.75rem on phone) for the name, "I make stuff →" and project titles;
+  labels `0.75rem` at weight 400 with `.12em` tracking. Footer data (IP, location, clock) is IBM Plex Mono.
+- **Arrows:** "I make stuff →" and the work view's ← share one style: muted at rest, then they brighten and
+  slide `0.375rem` the way they point on hover or focus.
+- **Zoom-proof sizing:** every CSS size is `rem`, and `html { font-size }` is a fixed share of the window,
+  exactly 16px at the 1786×1024 and 390×844 design windows. Browser zoom does not change the layout.
+  Desktop vs phone is chosen by `orientation`, not width. Do not add `px` sizes or width breakpoints.
+- **Portrait frame:** `.profile-frame-overlay` is sized from `--frame-pad` so the frame image's corner
+  brackets land on the photo's corners. Retune the 5/214 and 224/214 numbers if the frame image changes.
+- **Text above the dot texture:** `.portfolio-shell::after` is the dot-matrix screen at `z-index: 40`; copy
+  sits at 41. Never put a `transform` on `.portrait-stage` — it makes a stacking context and traps the copy
+  under the texture.
 
-- **`border.webp` and `bg-static.mp4` are both animated.** They were originally a 30-frame
-  APNG and a 12-frame GIF. Analog static and soft alpha glows are high-entropy, so LZW/PNG
-  compress them terribly — moving them to WebP/h264 cut them 3.7x and 5.5x with the frames
-  intact. **Before "optimizing" either one, check the frame count** — ImageMagick reports an
-  APNG as a single frame, which is exactly how the animation got flattened once already:
+## Work view
 
-  ```bash
-  python3 -c "d=open('src/assets/border.webp','rb').read(); print(d.count(b'ANMF'),'frames')"
-  ffprobe -v error -select_streams v -count_frames -show_entries stream=nb_read_frames \
-    -of csv=p=0 src/assets/bg-static.mp4
-  ```
-- **`mr_nguyen.png`** is a 4-colour PNG, not a JPEG — the portrait is a 2-tone image, so
-  JPEG spent bytes on ringing around hard edges.
-- The portrait and loader video are also stored grayscale/low-bitrate because CSS
-  desaturates and dims them anyway.
+"I make stuff →" links to `#work`. The home copy fades out (opacity, visibility, `inert`) and the project
+list fades in centred. Esc, the ← link and the browser back button close it; opening `#work` directly and
+closing returns to the home page instead of leaving the site. Projects are the `PROJECTS` array in
+`App.tsx`, numbered automatically.
 
 ## Implementation notes
 
-- Add GIFs to `src/assets/gallery/`; `import.meta.glob` discovers them at build time.
-- The filmstrip renders only enough tiles to span the viewport (`copiesFor` in `App.tsx`),
-  and pauses via `IntersectionObserver` when scrolled away or the tab is hidden. If you
-  change `.broadcast-item`'s width in CSS, update `itemWidth` to match.
-- Media is deliberately **not** gated behind `LoadingScreen`; it mounts underneath so it
-  downloads during the ~6s intro instead of after it.
-- `LoadingScreen` has a `MAX_LOADER_MS` safety cap — without it a stalled video means
-  `onEnded`/`onError` never fire and the site stays hidden forever.
-- The desktop composition is fixed to the viewport. The footer filmstrip is visually overlaid so it does not move the centered hero.
-- Mobile uses a stacked layout and a separate metadata bar beneath the GIF strip.
 - Visitor IP/location is resolved through `ipapi.co`, with `ipwho.is` as fallback.
 - The name uses `useScramble` plus layered CSS signal effects.
-- The portrait combines a VHS treatment, rotating outline, and `border.png` overlay.
 - Respect `prefers-reduced-motion` for all animations.

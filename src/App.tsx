@@ -1,11 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { ThinkingOrb } from 'thinking-orbs';
 import { useScramble } from './hooks/useScramble';
-import borderFrame from './assets/border.webp';
+import borderFrame from './assets/border-stars.webp';
+import { SignalBackground } from './components/SignalBackground';
 import './styles/globals.css';
 
 const NAME = 'Khương Nguyễn-Ngô';
+
+const PROJECTS = [
+  { title: 'VMT', href: 'https://virginmedtransportation.com/' },
+  { title: 'Bench Surgical', href: 'https://www.benchsurgical.com/' },
+  { title: 'Tolb', href: 'https://www.tolb.one/' },
+];
+
+// The work view lives at #work, so it has its own link and the browser back button closes it.
+const isWorkHash = () => window.location.hash === '#work';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -13,6 +23,49 @@ export default function App() {
   const [time, setTime] = useState(new Date());
   const [ip, setIp] = useState('···');
   const [location, setLocation] = useState('LOCATING···');
+  const [showWork, setShowWork] = useState(isWorkHash);
+  const workHeading = useRef<HTMLHeadingElement>(null);
+  const workTrigger = useRef<HTMLAnchorElement>(null);
+  // True once the work view was opened from this page, so closing can step back instead of leaving the site.
+  const openedHere = useRef(false);
+  const firstRender = useRef(true);
+
+  const closeWork = () => {
+    if (openedHere.current) window.history.back();
+    else {
+      window.history.replaceState(null, '', window.location.pathname);
+      setShowWork(false);
+    }
+  };
+  const closeWorkRef = useRef(closeWork);
+  closeWorkRef.current = closeWork;
+
+  useEffect(() => {
+    const sync = () => {
+      const work = isWorkHash();
+      openedHere.current = work;
+      setShowWork(work);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isWorkHash()) closeWorkRef.current();
+    };
+    window.addEventListener('hashchange', sync);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('hashchange', sync);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, []);
+
+  // Move focus with the view, so keyboard and screen-reader users land on what just appeared.
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    if (showWork) workHeading.current?.focus();
+    else workTrigger.current?.focus({ preventScroll: true });
+  }, [showWork]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setLoading(false), 1100);
@@ -65,17 +118,11 @@ export default function App() {
       second: '2-digit',
       hour12: false,
     })
-    .replace(',', '')
-    .toUpperCase();
+    .replace(',', '');
 
   return (
-    <main className="portfolio-shell">
-      <img
-        className="page-static"
-        src="/icegif-285-426582966.gif"
-        alt=""
-        aria-hidden="true"
-      />
+    <main className={`portfolio-shell${showWork ? ' is-work' : ''}`}>
+      <SignalBackground />
       <header className="site-header">
         <nav aria-label="Contact links">
           <a href="https://github.com/knguyenngo" target="_blank" rel="noreferrer" aria-label="GitHub">
@@ -102,19 +149,21 @@ export default function App() {
         </nav>
       </header>
 
-      <section id="home" className="portrait-stage">
+      <section id="home" className="portrait-stage" inert={showWork}>
         <div className="side-column side-column--left">
           <div className="identity">
-            <button
-              type="button"
-              className="name-signal"
-              data-text={display}
-              onMouseEnter={scramble}
-              onFocus={scramble}
-              onClick={scramble}
-            >
-              {display}
-            </button>
+            <h1 className="identity-name">
+              <button
+                type="button"
+                className="name-signal"
+                data-text={display}
+                onMouseEnter={scramble}
+                onFocus={scramble}
+                onClick={scramble}
+              >
+                {display}
+              </button>
+            </h1>
             <span>Software engineer</span>
           </div>
         </div>
@@ -123,10 +172,10 @@ export default function App() {
           <figure className="portrait-frame">
             <img
               className="portrait-image"
-              src="/mr_nguyen.png"
+              src="/profilepic.webp"
               alt="Portrait of Khương Nguyễn-Ngô"
-              width={860}
-              height={860}
+              width={400}
+              height={400}
               fetchPriority="high"
             />
             <img
@@ -143,29 +192,37 @@ export default function App() {
 
         <div className="side-column side-column--right">
           <div className="intro">
-            <h1>I make stuff.</h1>
-            <div className="work-list">
-              <a
-                className="work-link"
-                href="https://virginmedtransportation.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <span>2026</span>
-                <span>VMT Site ↗</span>
-              </a>
-              <a
-                className="work-link"
-                href="https://www.benchsurgical.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <span>2026</span>
-                <span>Bench Surgical ↗</span>
-              </a>
-            </div>
+            <a className="intro-trigger" href="#work" ref={workTrigger}>
+              I make stuff <span aria-hidden="true">→</span>
+            </a>
           </div>
         </div>
+      </section>
+
+      <section className="work-panel" aria-labelledby="work-heading" inert={!showWork}>
+        <h2 id="work-heading" className="visually-hidden" tabIndex={-1} ref={workHeading}>
+          Work
+        </h2>
+        <ol className="work-list">
+          {PROJECTS.map((project) => (
+            <li key={project.href}>
+              <a className="work-link" href={project.href} target="_blank" rel="noreferrer">
+                <span className="work-title">{project.title}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+        <a
+          className="work-back"
+          href="#"
+          aria-label="Back"
+          onClick={(event) => {
+            event.preventDefault();
+            closeWork();
+          }}
+        >
+          ←
+        </a>
       </section>
 
       <footer className="site-footer">
@@ -182,7 +239,7 @@ export default function App() {
       {loading && (
         <div className="loading-screen">
           <div className="loading-status" role="status" aria-label="Loading portfolio">
-            <ThinkingOrb state="solving" size={64} theme="dark" aria-hidden="true" />
+            <ThinkingOrb state="solving" size={20} theme="dark" aria-hidden="true" />
             <span>FREE GAZA</span>
           </div>
         </div>
