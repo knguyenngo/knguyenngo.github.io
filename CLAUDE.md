@@ -39,7 +39,7 @@ src/
 ├── App.tsx
 └── main.tsx
 public/
-└── profilepic.webp   # 400×400 colour-overlay cat portrait (source: design/source/pfp-color-overlay.png)
+└── profilepic.webp   # 400×400 pink glitch portrait (source: design/source/newpfp.jpg)
 design/               # Local only, not committed or shipped: design rounds, references, locked copies, archived assets
 ```
 
